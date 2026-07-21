@@ -55,3 +55,15 @@ rtt min/avg/max/mdev = 0.444/1.050/1.656/0.606 ms
 
 ```
 Note, this could be automated, but I did all these manually. 
+
+#### Passwordless SSH
+I remember that Ansible requires keybased ssh connection to the managed hosts, so lets make that happen.
+On the Control Node, I ran:
+   1. `ssh-keygen -t ed25519 -C "cezeh.rhca.lab"` To create a Private/Public key pair.
+   2. `ssh-copy-id admuser@vm2` To copy the public key to the remote hosts, in this case VM2/VM3. I created an user called `admuser` on both vm2 and vm3. 
+   3. Tested by trying to ssh into vm2 using the admuser, and I wasn't asked for a password. 
+   ```shell
+    cezeh@rhel10:~$ ssh admuser@vm2
+    Last login: Mon Jul 20 19:33:38 2026 from 192.168.109.158
+    [admuser@vm2 ~]$ 
+   ```
