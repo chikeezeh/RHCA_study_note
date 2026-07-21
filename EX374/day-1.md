@@ -14,3 +14,55 @@ Modules provide a uniform way to run tasks on the managed nodes, with well writt
 
 ##### Collections
 Ansible content Collections provide additional modules that don't come with Ansible-Core. These will need to be install separately from the regular ansible-core installation. Collections can be found on galaxy.ansible.com, and ansible automation platform if working from a Red Hat Distribution. 
+
+#### More Ansible setup on Control Node.
+
+##### Create an inventory file
+1. Created a working directory; `mkdir ansible_work;cd ansible_work`
+2. Added the two managed nodes into the an inventory file, nothing fancy for now. 
+```shell
+cat inventory 
+vm2
+vm3
+
+```
+3. Use ansible adhoc command to test the new inventory file.
+``` shell
+cezeh@rhel10:~/ansible_work$ ansible -i inventory all -u admuser -b -K -m ping
+BECOME password: 
+vm2 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+vm3 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+# -i specify inventory file to use
+# -u the user on the managed node with ssh access
+# -b become sudo
+# -K ask for sudo password
+# -m module, which in this case we used the ping module to test connectivity.
+```
+##### Ansible default settings
+1. This will be configured using the `ansible.cfg` file.
+2. Ran `ansible-config init --disable > ansible.cfg` to create a sample config file in my working directory that I will change later. 
+3. Updated only the contents below:
+```
+[defaults]
+remote_user=admuser
+host_key_checking=False
+inventory=inventory
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+become_ask_pass=False
+```
