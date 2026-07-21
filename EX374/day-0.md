@@ -67,3 +67,25 @@ On the Control Node, I ran:
     Last login: Mon Jul 20 19:33:38 2026 from 192.168.109.158
     [admuser@vm2 ~]$ 
    ```
+
+#### Setting up Ansible on the control Node
+1. Setting up required repositories.
+   1. `sudo subscription-manager repos --enable ansible-automation-platform-2.6-for-rhel-10-x86_64-rpms`
+   2. `sudo subscription-manager repos --enable rhel-10-for-x86_64-appstream-rpms`
+2. Install Ansible Software: `sudo dnf install ansible-core`, this installed version: `2:2.16.19-1.el10ap`
+3. Install Ansible Automation Content Navigator: `sudo dnf install ansible-navigator` version installed: `26.6.0-1.el10ap`
+4. Verify installation:
+```shell
+cezeh@rhel10:~$ ansible --version
+ansible [core 2.16.19]
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/cezeh/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.12/site-packages/ansible
+  ansible collection location = /home/cezeh/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible
+  python version = 3.12.13 (main, Jul 10 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)] (/usr/bin/python3)
+  jinja version = 3.1.6
+  libyaml = True
+cezeh@rhel10:~$ ansible-navigator --version
+ansible-navigator 26.6.0
+```
