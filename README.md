@@ -8,3 +8,4 @@ This repo is to document my study for the Red Hat Certified Architect in Ansible
 
 
 ![Red Hat](https://img.shields.io/badge/Red%20Hat-EE0000?style=for-the-badge&logo=redhat&logoColor=white) ![Ansible](https://img.shields.io/badge/ansible-%23EE0000.svg?style=for-the-badge&logo=ansible&logoColor=white)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/chikeezeh/RHCA_study_note)![GitHub last commit](https://img.shields.io/github/last-commit/chikeezeh/RHCA_study_note?color=red&logo=linux&logoColor=red)
