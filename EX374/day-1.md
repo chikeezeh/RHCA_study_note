@@ -87,4 +87,9 @@ ansible-navigator:
 10│Current settings file                     False    Search path                   /home/cezeh/ansible_work/ansible-navigator.yml
 ```
 7. To test ansible-navigator fully, I will register my controlled nodes on RHEL to enable package repositories. 
-8. 
+   
+#### Ansible Navigator Collections
+1. Use `ansible-navigator collections` to see the collections available in the execution environment. 
+2. If you need collections that are not present in the current execution environment;
+   1. Use another environment by specifying the `--eei` flag when running ansible navigator.
+   2. Create a collections directory in the current project directory and use `ansible-galaxy collection install` to install the collection to that directory.
