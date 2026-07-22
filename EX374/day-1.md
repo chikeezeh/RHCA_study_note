@@ -67,7 +67,7 @@ become_user=root
 become_ask_pass=False
 ```
 #### Ansible Navigator Setup
-1. Log into the podman registry using `podman login registr.redhat.io`
+1. Log into the podman registry using `podman login registry.redhat.io`
 2. Use `ansible-navigator` to go into the Ansible navigator TUI. 
 3. Use `podman search <key word>` to search for an image
 4. Pulling an image. `podman pull registry.redhat.io/ansible-automation-platform-26/ee-supported-rhel9`
