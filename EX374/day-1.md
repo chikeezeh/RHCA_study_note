@@ -66,3 +66,25 @@ become_method=sudo
 become_user=root
 become_ask_pass=False
 ```
+#### Ansible Navigator Setup
+1. Log into the podman registry using `podman login registr.redhat.io`
+2. Use `ansible-navigator` to go into the Ansible navigator TUI. 
+3. Use `podman search <key word>` to search for an image
+4. Pulling an image. `podman pull registry.redhat.io/ansible-automation-platform-26/ee-supported-rhel9`
+5. Create am ansible-navigator config file `vim ansible-navigator.yml` in the working directory with the content below;
+```shell
+ansible-navigator:
+  execution-environment:
+    image: registry.redhat.io/ansible-automation-platform-26/ee-supported-rhel9:latest
+    pull:
+      policy: missing
+  playbook-artifact:
+    enable: False
+
+```
+6. To ensure that the right config file is use, run `ansible-navigator settings` inside the working directory that contains the file created above. Output:
+```shell
+10│Current settings file                     False    Search path                   /home/cezeh/ansible_work/ansible-navigator.yml
+```
+7. To test ansible-navigator fully, I will register my controlled nodes on RHEL to enable package repositories. 
+8. 
