@@ -34,3 +34,8 @@ ERROR! couldn't resolve module/action 'ansible.posix.selinux'. This often indica
 Installed the ansible-posix collection using:
 `ansible-galaxy collection install ansible.posix -p collections`
 Updated `ansible.cfg`, had the collections path include the new directory. 
+
+#### Using another execution environment.
+`ansible-navigator --eei <link to execution environment`, using this, you can view the collections that this execution environment has. 
+
+Use `ansible-navigator settings --sample > my.yml` to create a sample configuration file for ansible-navigator, then edit to match your environment.
