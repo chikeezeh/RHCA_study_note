@@ -70,3 +70,12 @@ rtt min/avg/max/mdev = 0.384/1.496/4.224/1.593 ms
 `ansible-galaxy collection install ansible.posix` Install a new collection that has more modules to a default directory.
 `ansible-galaxy collection install ansible.posix -p <your directory>` Same as above, but to a specific directory.
 `ansible-galaxy collection list` Gives a summary of the collections currently installed. 
+
+#### Commonly Used Ansible Modules
+`command`: Runs any command on the managed host without using a shell, so you can't use shell characters like redirect or pipe.
+`shell`: Same as command module, but within a shell.
+`copy`: Copy files or lines of text to files.
+`package`: Used to install packages on Linux
+`yum`: similar to package, but specific to RHEL
+`service`: Used to manage services.
+`file`: Used for file management, creating, moving files and directories. 
