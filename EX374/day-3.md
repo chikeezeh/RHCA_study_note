@@ -23,9 +23,38 @@ A playbook consist of multiple plays with various tasks that are executed by mod
 ```
 Use `ansible-playbook <name of playbook>` or `ansible-navigator run <name of playbook>` to run a playbook. 
 #### Lab: Using a playbook to deploy a webserver
-Question.
+##### Question.
 Write a playbook that deploys a webserver on vm3, meeting the following requirements.
 1. The webserver is installed, started, and enabled.
 2. The firewall allows access
 3. An index.html file contailing the text "hello world" is copied to /var/www/html
 
+##### Solution.
+<details>
+<summary> Click to expand </summary>
+```yaml
+---
+- name: webserver deployment on vm2
+  hosts: vm2
+  tasks:
+  - name: install apache
+    ansible.builtin.yum:
+      name: httpd
+      state: latest
+  - name: copy content to /var/www/html
+    ansible.builtin.copy:
+      content: hello world
+      dest: /var/www/html/index.html
+  - name: start httpd services
+    ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: yes
+  - name: Permanently enable http service, also enable it immediately if possible
+    ansible.posix.firewalld:
+      service: http
+      state: enabled
+      permanent: true
+      immediate: true
+```
+</details>
