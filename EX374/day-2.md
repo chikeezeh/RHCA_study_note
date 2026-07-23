@@ -70,6 +70,7 @@ rtt min/avg/max/mdev = 0.384/1.496/4.224/1.593 ms
 `ansible-galaxy collection install ansible.posix` Install a new collection that has more modules to a default directory.
 `ansible-galaxy collection install ansible.posix -p <your directory>` Same as above, but to a specific directory.
 `ansible-galaxy collection list` Gives a summary of the collections currently installed. 
+`ansible-doc modulename` Get documentation on a specified module, sometimes with examples that can be used in a playbook.
 
 #### Commonly Used Ansible Modules
 `command`: Runs any command on the managed host without using a shell, so you can't use shell characters like redirect or pipe.
