@@ -21,3 +21,4 @@ A playbook consist of multiple plays with various tasks that are executed by mod
     debug:
       msg: output text 
 ```
+Use `ansible-playbook <name of playbook>` or `ansible-navigator run <name of playbook>` to run a playbook. 
