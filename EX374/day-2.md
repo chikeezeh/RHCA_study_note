@@ -65,3 +65,8 @@ PING vm3.cezeh.lab (192.168.109.160) 56(84) bytes of data.
 4 packets transmitted, 4 received, 0% packet loss, time 3058ms
 rtt min/avg/max/mdev = 0.384/1.496/4.224/1.593 ms
 ```
+#### More Ansible CLI commands.
+`ansible-doc -l` Lists the modules installed.
+`ansible-galaxy collection install ansible.posix` Install a new collection that has more modules to a default directory.
+`ansible-galaxy collection install ansible.posix -p <your directory>` Same as above, but to a specific directory.
+`ansible-galaxy collection list` Gives a summary of the collections currently installed. 
