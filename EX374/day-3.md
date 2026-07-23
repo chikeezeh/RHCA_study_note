@@ -1,0 +1,23 @@
+### Using Ansible Playbooks
+
+#### Ansible Playbook structure
+A playbook consist of multiple plays with various tasks that are executed by modules. The `yaml` example below shows the basic outline of a playbook.
+
+```yaml
+---
+- name: play one
+  hosts: the hosts for play one
+  tasks: #list of tasks to be conducted, each task will have a name.
+    - name: task one
+      debug: a module to use
+        msg: attribute of the module use, this is a child element
+    - name: tasks two
+      debug: another module to use
+        msg: another attribute
+- name: play two
+  hosts: the hosts for play two
+  tasks:
+  - name: tasks one of play two
+    debug:
+      msg: output text 
+```
