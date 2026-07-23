@@ -32,6 +32,7 @@ Write a playbook that deploys a webserver on vm3, meeting the following requirem
 ##### Solution.
 <details>
 <summary> Click to expand </summary>
+
 ```yaml
 ---
 - name: webserver deployment on vm2
