@@ -29,3 +29,5 @@ registry_password=<your RHN password>
 ```
 11. Install `ansible-core` on host if ansible wasn't installed initially. `sudo dnf install ansible-core` 
 12. Once the inventory file as been updated, run `ansible-playbook -i inventory ansible.containerized_installer.install` Note, if you have less than 16GB of memory space, this will fail, overwrite the memory check with: `ansible-playbook -i inventory ansible.containerized_installer.install -e '{"ansible_memtotal_mb": 16000}'` Basically, we are overwriting the `ansible_memtotal_mb` fact on the command line with a value we want. 
+13. Once installation is done, you can access the webserver using the ip address of the host that is running AAP. You will be greeted with the page below, use the user you used to install AAP and the password that is in the inventory file.
+![](images/aaplogin.jpg)
