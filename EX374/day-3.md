@@ -59,3 +59,12 @@ Write a playbook that deploys a webserver on vm3, meeting the following requirem
       immediate: true
 ```
 </details>
+
+#### Automation Platform, and AWX
+To access ansible tower go to `console.redhat.com`. This is a web interface that manages ansible, it gives access to the following;
+1. Role-Based Access Control
+2. Caching of passwords
+3. Workflow designer
+AWX is the open source upstream version of ansible tower. 
+
+
