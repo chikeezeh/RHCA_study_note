@@ -14,3 +14,9 @@ Ansible also provides variables that are called facts, these are properties of t
 - Using `var_prompt` to ask for input.
 - Using `ansible-vault` for sensitive values.
 - Host variables, that have been set of a host or group of hosts.
+
+##### Variable Precedence
+NOTE, the most specific level always wins in ansible.
+- Command line (Highest precedence)
+- Inventory file
+- Playbook (using `set_facts`)
