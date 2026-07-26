@@ -37,6 +37,13 @@ NOTE, the most specific level always wins in ansible.
   vars_files:
     - vars/users.yml #link to the variable file from the working directory.
 ```
+The variable file `vars/users.yml` will be defined as below:
+```yaml
+key1: value1
+key2: value2
+key3: value3
+```
+
 
 ##### Using the variables
 
