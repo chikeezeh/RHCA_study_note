@@ -20,3 +20,21 @@ NOTE, the most specific level always wins in ansible.
 - Command line (Highest precedence)
 - Inventory file
 - Playbook (using `set_facts`)
+
+##### Example of variable definition.
+
+###### Beginning of a play
+```yaml
+- hosts: all
+  vars:
+    key1: value1
+    key2: value2
+```
+###### Inside a variable file that will be include in the play. 
+
+```yaml
+- hosts: all
+  vars_files:
+    - vars/users.yml #link to the variable file from the working directory.
+```
+
