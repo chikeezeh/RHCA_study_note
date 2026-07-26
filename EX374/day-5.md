@@ -7,3 +7,10 @@ Variables are key, value pairs which make it easy to refer to the value in diffe
 
 Ansible also provides variables that are called facts, these are properties of the managed hosts that are discovered when the playbook is running. Facts discovery is on by default, and can be disabled if needed.
 
+##### Defining Variables.
+- Define the variables in a playbook.
+- Use include files to store variables externally to the playbook.
+- Useing `register` to capture the output of a command or taks and saved to a variable.
+- Using `var_prompt` to ask for input.
+- Using `ansible-vault` for sensitive values.
+- Host variables, that have been set of a host or group of hosts.
