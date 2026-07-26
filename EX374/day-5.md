@@ -17,7 +17,7 @@ Ansible also provides variables that are called facts, these are properties of t
 
 ##### Variable Precedence
 NOTE, the most specific level always wins in ansible.
-- Command line (Highest precedence)
+- Command line (Highest precedence) `-e key1=var1`
 - Inventory file
 - Playbook (using `set_facts`)
 
@@ -38,3 +38,20 @@ NOTE, the most specific level always wins in ansible.
     - vars/users.yml #link to the variable file from the working directory.
 ```
 
+##### Using the variables
+
+Main way to refer to variables is by using double curly braces, `{{ key1 }}`, however if the variable is the first element using quotes is mandatory; `"{{ key1 }}"`, also when using conditional statements, no curly braces needed; `key1`. In the example below, , we didn't need the `""` in the `name` tasks line, but we used `""` between the variable in the `name` attribute line because it was the first element.
+
+```yaml
+---
+- name: Create a user play
+  vars:
+    username: chike
+  hosts: vm2
+  tasks:
+  - name: Create a user called {{ username }}
+    user:
+      name: "{{ username }}"
+
+
+```
