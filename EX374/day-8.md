@@ -168,3 +168,10 @@ Playbook example using mixed variables:
     debug:
       var: ansible_mounts[0]
 ```
+#### Magic Variables
+These are system level variables that can't be overwritten. Note don't name your variables the name of a system variable.
+Examples:
+`hostvars`: A dictionary that contains all variables that apply to a specific host.
+`inventory_hostname`: inventory name of the current host
+`groups`: all host in inventory
+`group_names`: list of groups the current host is a part of.
