@@ -231,3 +231,17 @@ PLAY RECAP *********************************************************************
 vm1                        : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 ```
+#### Ansible vault
+Ansible vault is used to store sensitive information before they can be used in a play. This prevents storing sensitive information in plain text. 
+##### Ansible vault commands.
+- `ansible-vault create <sensitive_values>` This will ask for a password twice, and open a file where you can type in your secret information once. After the file is closed, the values become encrypted and can only be viewed or decrypted using the ansible-vault commands an the password.
+
+- `ansible-vault view <sensitive_values>` View the values, requires password. 
+- `ansible-vault edit <sensitive_values>` edit the values. 
+- `ansible-vault encrypt <sensitive_values>` encrypt an existing file.
+- `ansible-vault decrypt <sensitive_values>` decrypt the values.
+- `ansible-vault rekey <sensitive_values>` change the password. 
+
+##### Using vault files in plays
+To use the encrypted files, add to the `vars_files` section of the play. 
+Then when running the playbook, use `--ask-vault-pass` to be prompted for the vault password, or add the vault password as a single line in a file (`vault-file`) and use `--vault-password-file=vault-file`. 
