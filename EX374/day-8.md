@@ -99,3 +99,72 @@ PLAY RECAP *********************************************************************
 vm2                        : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 ```
+
+#### Multi-valued variables
+These are arrays and dictionaries.
+
+##### Dictionaries.
+
+Unordered key value pairs, example are ansible_facts. Loops are not supported in dictionaries.
+Example:
+```json
+"ansible_date_time": {
+            "date": "2026-07-28",
+            "day": "28",
+            "epoch": "1785277391",
+            "epoch_int": "1785277391",
+            "hour": "15",
+            "iso8601": "2026-07-28T22:23:11Z",
+            "iso8601_basic": "20260728T152311386233",
+            "iso8601_basic_short": "20260728T152311",
+            "iso8601_micro": "2026-07-28T22:23:11.386233Z",
+            "minute": "23",
+            "month": "07",
+            "second": "11",
+            "time": "15:23:11",
+            "tz": "MST",
+            "tz_dst": "MST",
+            "tz_offset": "-0700",
+            "weekday": "Tuesday",
+            "weekday_number": "2",
+            "weeknumber": "30",
+            "year": "2026"
+        },
+
+```
+##### Arrays.
+These are ordered list of variables, loops can be used on arrays. Example list of packages to install on a host. 
+
+Example:
+```python
+"dm-0": [
+                    "dm-name-rhel-root",
+                    "dm-uuid-LVM-GNNEflY3kgz8UsPucJrpRygDBW0UN239gvL8pFodgP3eaZUpyDt1aL9QNkR4ilHz"
+                ]
+```
+#### Combination of arrays and dictionary
+
+Example:
+```yaml
+users:
+- username: linda
+  shell: /bin/bash
+- username: lisa
+  shell: /nobin/bash
+```
+`users` is an array, that contains 2 list items, where each list items are dictionaries. Another way to think about it is:
+`users=[{username: linda, shell: /bin/bash},{username: lisa, shell: /nobin/bash}]`
+
+Playbook example using mixed variables:
+```yaml
+---
+- name: mixed array and dictionary variables
+  hosts: vm1
+  tasks:
+  - name: Get all element in the ansible_mounts
+    debug:
+      var: ansible_mounts
+  - name: Get first element in the ansible_mounts array
+    debug:
+      var: ansible_mounts[0]
+```
