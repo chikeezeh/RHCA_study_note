@@ -175,3 +175,59 @@ Examples:
 `inventory_hostname`: inventory name of the current host
 `groups`: all host in inventory
 `group_names`: list of groups the current host is a part of.
+
+
+#### Using register
+Simply put, this is used to store the output of a command into a variable, and that variable can then be re-used somewhere else in the play. 
+Example:
+```yaml
+---
+- name: Testing register
+  hosts: vm1
+  tasks:
+  - name: Get the current time and save to a variable.
+    command: date
+    register: thisdate
+  - name: Show current time.
+    debug:
+      var: thisdate
+```
+Output:
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook register.yml
+
+PLAY [Testing register] **************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Get the current time and save to a variable.] **********************************************************************************************************************************************************
+changed: [vm1]
+
+TASK [Show current time.] ************************************************************************************************************************************************************************************
+ok: [vm1] => {
+    "thisdate": {
+        "changed": true,
+        "cmd": [
+            "date"
+        ],
+        "delta": "0:00:00.001832",
+        "end": "2026-07-28 20:12:59.539375",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-07-28 20:12:59.537543",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "Tue Jul 28 08:12:59 PM MST 2026",
+        "stdout_lines": [
+            "Tue Jul 28 08:12:59 PM MST 2026"
+        ]
+    }
+}
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm1                        : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
