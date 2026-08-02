@@ -64,3 +64,18 @@ vm3                        : ok=3    changed=0    unreachable=0    failed=0    s
 vm4                        : ok=2    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
 
 ```
+
+##### Multiple conditions `and`
+
+When we have multiple conditions that all need to evaluate to true, the best practice is to use yaml list as shown below:
+
+```yaml
+- name: Install Nginx on Ubuntu 22.04
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  when:
+    - ansible_facts['distribution'] == 'Ubuntu'
+    - ansible_facts['distribution_version'] == '22.04'
+    - enable_nginx_service | default(false) | bool
+```
