@@ -192,3 +192,255 @@ webserver                  : ok=1    changed=0    unreachable=0    failed=0    s
 
 </details>
 
+#### Combining `when` and `register`
+
+We can run a task, store the output using register in a variable, then use that variable in another task as a conditional.
+
+Example below, we output the content of the /etc/passwd file, and then check if a particular user is present. 
+
+```yaml
+---
+- name: Combining register and when conditionals
+  hosts: rhel,ubuntu
+  tasks:
+  - name: get the ouput of /etc/passwd
+    shell: cat /etc/passwd
+    register: passwd_content
+  - name: show the content of passwd
+    debug:
+      var: passwd_content
+  - name: show only the content user apache
+    debug:
+      msg: /etc/passwd file contains user apache
+    when: passwd_content.stdout.find('apache') != -1
+```
+Output:
+
+
+<details>
+<summary> Click to expand </summary>
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook registerwhen.yml
+
+PLAY [Combining register and when conditionals] **************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm4]
+ok: [vm3]
+ok: [vm1]
+ok: [vm2]
+
+TASK [get the ouput of /etc/passwd] **************************************************************************************************************************************************************************
+changed: [vm4]
+changed: [vm3]
+changed: [vm1]
+changed: [vm2]
+
+TASK [show the content of passwd] ****************************************************************************************************************************************************************************
+ok: [vm1] => {
+    "passwd_content": {
+        "changed": true,
+        "cmd": "cat /etc/passwd",
+        "delta": "0:00:00.002645",
+        "end": "2026-08-01 19:04:29.387469",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-08-01 19:04:29.384824",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "root:x:0:0:root:/root:/bin/bash\nbin:x:1:1:bin:/bin:/sbin/nologin\ndaemon:x:2:2:daemon:/sbin:/sbin/nologin\nadm:x:3:4:adm:/var/adm:/sbin/nologin\nlp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\nsync:x:5:0:sync:/sbin:/bin/sync\nshutdown:x:6:0:shutdown:/sbin:/sbin/shutdown\nhalt:x:7:0:halt:/sbin:/sbin/halt\nmail:x:8:12:mail:/var/spool/mail:/sbin/nologin\noperator:x:11:0:operator:/root:/sbin/nologin\ngames:x:12:100:games:/usr/games:/sbin/nologin\nftp:x:14:50:FTP User:/var/ftp:/sbin/nologin\nnobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin\nsystemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin\ndbus:x:81:81:System message bus:/:/sbin/nologin\ntss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin\nsssd:x:998:995:User for sssd:/:/sbin/nologin\nsshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin\nsystemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin\ncezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash\nansible:x:1001:1001::/home/ansible:/bin/bash\napache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin",
+        "stdout_lines": [
+            "root:x:0:0:root:/root:/bin/bash",
+            "bin:x:1:1:bin:/bin:/sbin/nologin",
+            "daemon:x:2:2:daemon:/sbin:/sbin/nologin",
+            "adm:x:3:4:adm:/var/adm:/sbin/nologin",
+            "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin",
+            "sync:x:5:0:sync:/sbin:/bin/sync",
+            "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown",
+            "halt:x:7:0:halt:/sbin:/sbin/halt",
+            "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin",
+            "operator:x:11:0:operator:/root:/sbin/nologin",
+            "games:x:12:100:games:/usr/games:/sbin/nologin",
+            "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin",
+            "nobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin",
+            "systemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin",
+            "dbus:x:81:81:System message bus:/:/sbin/nologin",
+            "tss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin",
+            "sssd:x:998:995:User for sssd:/:/sbin/nologin",
+            "sshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin",
+            "systemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin",
+            "cezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash",
+            "ansible:x:1001:1001::/home/ansible:/bin/bash",
+            "apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin"
+        ]
+    }
+}
+ok: [vm2] => {
+    "passwd_content": {
+        "changed": true,
+        "cmd": "cat /etc/passwd",
+        "delta": "0:00:00.002642",
+        "end": "2026-08-01 19:04:30.300970",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-08-01 19:04:30.298328",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "root:x:0:0:root:/root:/bin/bash\nbin:x:1:1:bin:/bin:/sbin/nologin\ndaemon:x:2:2:daemon:/sbin:/sbin/nologin\nadm:x:3:4:adm:/var/adm:/sbin/nologin\nlp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\nsync:x:5:0:sync:/sbin:/bin/sync\nshutdown:x:6:0:shutdown:/sbin:/sbin/shutdown\nhalt:x:7:0:halt:/sbin:/sbin/halt\nmail:x:8:12:mail:/var/spool/mail:/sbin/nologin\noperator:x:11:0:operator:/root:/sbin/nologin\ngames:x:12:100:games:/usr/games:/sbin/nologin\nftp:x:14:50:FTP User:/var/ftp:/sbin/nologin\nnobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin\nsystemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin\ndbus:x:81:81:System message bus:/:/sbin/nologin\ntss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin\nsssd:x:998:995:User for sssd:/:/sbin/nologin\nsshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin\nsystemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin\ncezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash\nansible:x:1001:1001::/home/ansible:/bin/bash\napache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin",
+        "stdout_lines": [
+            "root:x:0:0:root:/root:/bin/bash",
+            "bin:x:1:1:bin:/bin:/sbin/nologin",
+            "daemon:x:2:2:daemon:/sbin:/sbin/nologin",
+            "adm:x:3:4:adm:/var/adm:/sbin/nologin",
+            "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin",
+            "sync:x:5:0:sync:/sbin:/bin/sync",
+            "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown",
+            "halt:x:7:0:halt:/sbin:/sbin/halt",
+            "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin",
+            "operator:x:11:0:operator:/root:/sbin/nologin",
+            "games:x:12:100:games:/usr/games:/sbin/nologin",
+            "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin",
+            "nobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin",
+            "systemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin",
+            "dbus:x:81:81:System message bus:/:/sbin/nologin",
+            "tss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin",
+            "sssd:x:998:995:User for sssd:/:/sbin/nologin",
+            "sshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin",
+            "systemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin",
+            "cezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash",
+            "ansible:x:1001:1001::/home/ansible:/bin/bash",
+            "apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin"
+        ]
+    }
+}
+ok: [vm3] => {
+    "passwd_content": {
+        "changed": true,
+        "cmd": "cat /etc/passwd",
+        "delta": "0:00:00.002569",
+        "end": "2026-08-01 19:04:29.454583",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-08-01 19:04:29.452014",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "root:x:0:0:root:/root:/bin/bash\nbin:x:1:1:bin:/bin:/sbin/nologin\ndaemon:x:2:2:daemon:/sbin:/sbin/nologin\nadm:x:3:4:adm:/var/adm:/sbin/nologin\nlp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\nsync:x:5:0:sync:/sbin:/bin/sync\nshutdown:x:6:0:shutdown:/sbin:/sbin/shutdown\nhalt:x:7:0:halt:/sbin:/sbin/halt\nmail:x:8:12:mail:/var/spool/mail:/sbin/nologin\noperator:x:11:0:operator:/root:/sbin/nologin\ngames:x:12:100:games:/usr/games:/sbin/nologin\nftp:x:14:50:FTP User:/var/ftp:/sbin/nologin\nnobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin\nsystemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin\ndbus:x:81:81:System message bus:/:/sbin/nologin\ntss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin\nsssd:x:998:995:User for sssd:/:/sbin/nologin\nsshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin\nsystemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin\ncezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash\nansible:x:1001:1001::/home/ansible:/bin/bash\napache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin",
+        "stdout_lines": [
+            "root:x:0:0:root:/root:/bin/bash",
+            "bin:x:1:1:bin:/bin:/sbin/nologin",
+            "daemon:x:2:2:daemon:/sbin:/sbin/nologin",
+            "adm:x:3:4:adm:/var/adm:/sbin/nologin",
+            "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin",
+            "sync:x:5:0:sync:/sbin:/bin/sync",
+            "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown",
+            "halt:x:7:0:halt:/sbin:/sbin/halt",
+            "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin",
+            "operator:x:11:0:operator:/root:/sbin/nologin",
+            "games:x:12:100:games:/usr/games:/sbin/nologin",
+            "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin",
+            "nobody:x:65534:65534:Kernel Overflow User:/:/sbin/nologin",
+            "systemd-coredump:x:999:997:systemd Core Dumper:/:/sbin/nologin",
+            "dbus:x:81:81:System message bus:/:/sbin/nologin",
+            "tss:x:59:59:Account used for TPM access:/dev/null:/sbin/nologin",
+            "sssd:x:998:995:User for sssd:/:/sbin/nologin",
+            "sshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/sbin/nologin",
+            "systemd-oom:x:993:993:systemd Userspace OOM Killer:/:/usr/sbin/nologin",
+            "cezeh:x:1000:1000:Chike Ezeh:/home/cezeh:/bin/bash",
+            "ansible:x:1001:1001::/home/ansible:/bin/bash",
+            "apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin"
+        ]
+    }
+}
+ok: [vm4] => {
+    "passwd_content": {
+        "changed": true,
+        "cmd": "cat /etc/passwd",
+        "delta": "0:00:00.003292",
+        "end": "2026-08-01 19:04:29.521206",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-08-01 19:04:29.517914",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/usr/sbin/nologin\nman:x:6:12:man:/var/cache/man:/usr/sbin/nologin\nlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin\nmail:x:8:8:mail:/var/mail:/usr/sbin/nologin\nnews:x:9:9:news:/var/spool/news:/usr/sbin/nologin\nuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin\nproxy:x:13:13:proxy:/bin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nbackup:x:34:34:backup:/var/backups:/usr/sbin/nologin\nlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin\nirc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\nsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin\nsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin\nmessagebus:x:102:105::/nonexistent:/usr/sbin/nologin\nsystemd-timesync:x:103:106:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin\nsyslog:x:104:111::/home/syslog:/usr/sbin/nologin\n_apt:x:105:65534::/nonexistent:/usr/sbin/nologin\ntss:x:106:112:TPM software stack,,,:/var/lib/tpm:/bin/false\nuuidd:x:107:115::/run/uuidd:/usr/sbin/nologin\nsystemd-oom:x:108:116:systemd Userspace OOM Killer,,,:/run/systemd:/usr/sbin/nologin\ntcpdump:x:109:117::/nonexistent:/usr/sbin/nologin\navahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin\nusbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin\ndnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin\nkernoops:x:113:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin\navahi:x:114:121:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin\ncups-pk-helper:x:115:122:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin\nrtkit:x:116:123:RealtimeKit,,,:/proc:/usr/sbin/nologin\nwhoopsie:x:117:124::/nonexistent:/bin/false\nsssd:x:118:125:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin\nspeech-dispatcher:x:119:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false\nnm-openvpn:x:120:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin\nsaned:x:121:128::/var/lib/saned:/usr/sbin/nologin\ncolord:x:122:129:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin\ngeoclue:x:123:130::/var/lib/geoclue:/usr/sbin/nologin\npulse:x:124:131:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin\ngnome-initial-setup:x:125:65534::/run/gnome-initial-setup/:/bin/false\nhplip:x:126:7:HPLIP system user,,,:/run/hplip:/bin/false\ngdm:x:127:133:Gnome Display Manager:/var/lib/gdm3:/bin/false\ncezeh:x:1000:1000:Chike Ezeh,,,:/home/cezeh:/bin/bash\nansible:x:1001:1002::/home/ansible:/bin/bash\nfwupd-refresh:x:999:999:Firmware update daemon:/var/lib/fwupd:/usr/sbin/nologin\nsshd:x:128:65534::/run/sshd:/usr/sbin/nologin",
+        "stdout_lines": [
+            "root:x:0:0:root:/root:/bin/bash",
+            "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin",
+            "bin:x:2:2:bin:/bin:/usr/sbin/nologin",
+            "sys:x:3:3:sys:/dev:/usr/sbin/nologin",
+            "sync:x:4:65534:sync:/bin:/bin/sync",
+            "games:x:5:60:games:/usr/games:/usr/sbin/nologin",
+            "man:x:6:12:man:/var/cache/man:/usr/sbin/nologin",
+            "lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin",
+            "mail:x:8:8:mail:/var/mail:/usr/sbin/nologin",
+            "news:x:9:9:news:/var/spool/news:/usr/sbin/nologin",
+            "uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin",
+            "proxy:x:13:13:proxy:/bin:/usr/sbin/nologin",
+            "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin",
+            "backup:x:34:34:backup:/var/backups:/usr/sbin/nologin",
+            "list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin",
+            "irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin",
+            "gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin",
+            "nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin",
+            "systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin",
+            "systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin",
+            "messagebus:x:102:105::/nonexistent:/usr/sbin/nologin",
+            "systemd-timesync:x:103:106:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin",
+            "syslog:x:104:111::/home/syslog:/usr/sbin/nologin",
+            "_apt:x:105:65534::/nonexistent:/usr/sbin/nologin",
+            "tss:x:106:112:TPM software stack,,,:/var/lib/tpm:/bin/false",
+            "uuidd:x:107:115::/run/uuidd:/usr/sbin/nologin",
+            "systemd-oom:x:108:116:systemd Userspace OOM Killer,,,:/run/systemd:/usr/sbin/nologin",
+            "tcpdump:x:109:117::/nonexistent:/usr/sbin/nologin",
+            "avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin",
+            "usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin",
+            "dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin",
+            "kernoops:x:113:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin",
+            "avahi:x:114:121:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin",
+            "cups-pk-helper:x:115:122:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin",
+            "rtkit:x:116:123:RealtimeKit,,,:/proc:/usr/sbin/nologin",
+            "whoopsie:x:117:124::/nonexistent:/bin/false",
+            "sssd:x:118:125:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin",
+            "speech-dispatcher:x:119:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false",
+            "nm-openvpn:x:120:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin",
+            "saned:x:121:128::/var/lib/saned:/usr/sbin/nologin",
+            "colord:x:122:129:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin",
+            "geoclue:x:123:130::/var/lib/geoclue:/usr/sbin/nologin",
+            "pulse:x:124:131:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin",
+            "gnome-initial-setup:x:125:65534::/run/gnome-initial-setup/:/bin/false",
+            "hplip:x:126:7:HPLIP system user,,,:/run/hplip:/bin/false",
+            "gdm:x:127:133:Gnome Display Manager:/var/lib/gdm3:/bin/false",
+            "cezeh:x:1000:1000:Chike Ezeh,,,:/home/cezeh:/bin/bash",
+            "ansible:x:1001:1002::/home/ansible:/bin/bash",
+            "fwupd-refresh:x:999:999:Firmware update daemon:/var/lib/fwupd:/usr/sbin/nologin",
+            "sshd:x:128:65534::/run/sshd:/usr/sbin/nologin"
+        ]
+    }
+}
+
+TASK [show only the content user apache] *********************************************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": "/etc/passwd file contains user apache"
+}
+ok: [vm2] => {
+    "msg": "/etc/passwd file contains user apache"
+}
+ok: [vm3] => {
+    "msg": "/etc/passwd file contains user apache"
+}
+skipping: [vm4]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm1                        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+vm2                        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+vm3                        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+vm4                        : ok=3    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+```
+
+</details>
