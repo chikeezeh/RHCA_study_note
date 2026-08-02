@@ -79,3 +79,16 @@ When we have multiple conditions that all need to evaluate to true, the best pra
     - ansible_facts['distribution_version'] == '22.04'
     - enable_nginx_service | default(false) | bool
 ```
+
+##### Multiple conditions `or`
+
+If any of the conditions can be True for the task to run, use explicit or operators within a single expression:
+
+```yaml
+- name: Install Nginx on Debian-based systems
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu' or ansible_facts['distribution'] == 'Debian'
+```
+
