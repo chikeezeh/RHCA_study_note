@@ -92,3 +92,16 @@ If any of the conditions can be True for the task to run, use explicit or operat
   when: ansible_facts['distribution'] == 'Ubuntu' or ansible_facts['distribution'] == 'Debian'
 ```
 
+##### Multiple conditions combining `and` and `or`
+
+For nested or mixed logic (e.g., $(A \text{ OR } B) \text{ AND } C$), use parentheses inside a single expression or combine list items with parentheses:
+
+```yaml
+- name: Deploy application package
+  ansible.builtin.package:
+    name: myapp
+    state: present
+  when:
+    - (ansible_facts['distribution'] == 'Ubuntu' or ansible_facts['distribution'] == 'Debian')
+    - env == 'production'
+```
