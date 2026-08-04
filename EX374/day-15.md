@@ -52,3 +52,13 @@ The second approach is to check if the user already exists, and use a when claus
 ```
 
 </details>
+
+#### File management.
+
+There are a couple of key modules that can be used to manage file creation, content manipulation etc.
+
+- `ansible.builtin.copy` Used to copy files from control host to a managed host.
+- `ansible.posix.synchronize` syncs file contents and is more efficient than copy. This requires `rsync` installed on all the hosts involved. 
+- `ansible.builtin.fetch` will fetch a file from a managed host to the control host.
+- `ansible.builtin.stat` Gets the status of files.
+- `ansible.builtin.blockinfile` Can be used to write a block of text to a file, and much more.
