@@ -28,3 +28,27 @@ The first approach is to use block, rescue, always. This way if we try adding th
 ```
 
 </details>
+
+<details>
+<summary> Click to expand Solution 2 </summary>
+The second approach is to check if the user already exists, and use a when clause to run the command module if the user doesn't exist. See implementation below:
+
+
+```yaml
+---
+- name: This play uses the command module to add a user idempotently
+  hosts: vm1
+  vars:
+    username: joan
+  tasks:
+  - name: use the shell command to capture the content of /etc/passwd
+    shell: cat /etc/passwd
+    register: passwd_content
+ 
+  - name: use the command module to add a user name
+    command: useradd {{ username }}
+    when: passwd_content.stdout.find(username) == -1
+
+```
+
+</details>
