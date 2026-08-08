@@ -8,3 +8,9 @@ They are typically installed in;
 
 Alternatively, you can edit where roles are installed by changing the `roles_path` options in `ansible.cfg` file.
 
+By default, roles are executed before all the tasks in the playbook. To force tasks to be executed before the roles, use the `pre_tasks` option. To force tasks to be executed after the roles, use the `post_tasks` option.
+
+##### Installing Roles
+
+- from ansible galaxy official website: `ansible-galaxy role install geerlingguy.nginx`
+- Install to a `roles` directory in the current working directory `ansible-galaxy role install geerlingguy.nginx -p roles`
