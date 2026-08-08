@@ -14,3 +14,9 @@ By default, roles are executed before all the tasks in the playbook. To force ta
 
 - from ansible galaxy official website: `ansible-galaxy role install geerlingguy.nginx`
 - Install to a `roles` directory in the current working directory `ansible-galaxy role install geerlingguy.nginx -p roles`
+
+##### Important roles commands
+- `ansible-galaxy role install <name of role>` Install a role using the name.
+- `ansible-galaxy role list` List the roles installed on the control node.
+- `ansible-galaxy search <keyword>` Search for a role keyword from `galaxy.ansible.com`
+
