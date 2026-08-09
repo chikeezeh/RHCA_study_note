@@ -81,3 +81,35 @@ vm1                        : ok=10   changed=0    unreachable=0    failed=0    s
 ```
 
 </details>
+
+#### Structure of a role. 
+
+A role has certain directory structure that it needs to maintain to be able to function correctly. 
+The `ansible-galaxy role init <name of role>` command in the directory that the role exists will create the correct directory structure. 
+
+See example below:
+
+```shell
+ansible@control:~/ansible_work/roles$ ansible-galaxy role init demorole
+```
+Below is the structure of the directory created:
+
+```shell
+ansible@control:~/ansible_work/roles/demorole$ ls -l
+total 4
+drwxr-xr-x. 2 ansible ansible   22 Aug  8 18:16 defaults
+drwxr-xr-x. 2 ansible ansible    6 Aug  8 18:16 files
+drwxr-xr-x. 2 ansible ansible   22 Aug  8 18:16 handlers
+drwxr-xr-x. 2 ansible ansible   22 Aug  8 18:16 meta
+-rw-r--r--. 1 ansible ansible 1328 Aug  8 18:16 README.md
+drwxr-xr-x. 2 ansible ansible   22 Aug  8 18:16 tasks
+drwxr-xr-x. 2 ansible ansible    6 Aug  8 18:16 templates
+drwxr-xr-x. 2 ansible ansible   39 Aug  8 18:16 tests
+drwxr-xr-x. 2 ansible ansible   22 Aug  8 18:16 vars
+```
+The most important directories are;
+- `defaults` default variables that can be changed.
+- `vars` variables that shouldn't be changed.
+- `tasks` contains the main playbook.
+- `templates` Jinja2 templates that are needed by the role going here.
+- `handlers` handlers are defined in this directory. 
