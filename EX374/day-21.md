@@ -58,3 +58,32 @@ drwxr-xr-x.  9 root root 4096 Aug 10 08:20 timesync
 drwxr-xr-x.  9 root root 4096 Aug 10 08:20 tlog
 drwxr-xr-x.  9 root root 4096 Aug 10 08:20 vpn
 ```
+The installed roles have example `yaml` files, for example;
+
+```shell
+ansible@control:/usr/share/ansible/collections/ansible_collections/redhat/rhel_system_roles/docs/timesync$ cat single-pool.yml 
+---
+- name: Example with single pool
+  hosts: "{{ targets }}"
+  vars:
+    timesync_ntp_servers:
+      - hostname: 2.pool.ntp.org
+        pool: true
+        iburst: true
+  roles:
+    - redhat.rhel_system_roles.timesync
+```
+We can copy the file above to our working folder, then edit the `hosts` variable to our target host(s) as shown below;
+
+```yaml
+---
+- name: Example with single pool
+  hosts: vm1
+  vars:
+    timesync_ntp_servers:
+      - hostname: 2.pool.ntp.org
+        pool: true
+        iburst: true
+  roles:
+    - redhat.rhel_system_roles.timesync
+```
