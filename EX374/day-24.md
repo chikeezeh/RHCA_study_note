@@ -1,0 +1,2 @@
+#### Using Delegation
+Delegation lets you run tasks on another hosts. The `delegate_to` task property is used to achieve this functionality. This is useful when you want to write a play that affects multiple hosts, but you want a specific task to run on a specific host without starting a new play. 
