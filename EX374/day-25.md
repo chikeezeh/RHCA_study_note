@@ -32,3 +32,47 @@ ansible.builtin.from_yaml                        Convert YAML string into variab
 ansible.builtin.from_yaml_all                    Convert a series of YAML documents into a variable structure
 
 ```
+##### Making a custom filter.
+
+We will be making use of this [filter](https://github.com/sandervanvugt/ansible_ccat/tree/main/my_collection) created by [Sander van Vugt](https://github.com/sandervanvugt/ansible_ccat/commits?author=sandervanvugt), clone the repo. I will move the collection directory to my working directory.
+
+This is the structure of `my_collection` directory;
+
+```shell
+[ansible@control ansible_work]$ tree my_collection/
+my_collection/
+├── galaxy.yml
+├── my_namespace-my_collection-1.0.0.tar.gz
+├── plugins
+│   └── filter
+│       └── phone_format.py
+└── README.md
+```
+The python file `phone_format.py` takes a simple 10 digit string, and returns it like a phone number. Hence, `input='1234567890'` will return `output=(123) 456-7890`.
+
+Use `ansible-galaxy collection build my_collection` to build the collection, then use `ansible-galaxy collection install my_namespace-my_collection-1.0.0.tar.gz` to install. 
+
+We can verify that our collection is installed as shown below;
+
+```shell
+[ansible@control ansible_work]$ ansible-galaxy collection list
+
+# /home/ansible/.ansible/collections/ansible_collections
+Collection                 Version
+-------------------------- -------
+ansible.posix              2.2.2
+my_namespace.my_collection 1.0.0
+
+# /usr/share/ansible/collections/ansible_collections
+Collection                 Version
+-------------------------- -------
+redhat.rhel_system_roles   1.120.5
+
+
+[ansible@control ansible_work]$ ansible-doc -t filter -l | grep -i my_namespace
+my_namespace.my_collection.phone_format          UNDOCUMENTED
+
+
+```
+
+
