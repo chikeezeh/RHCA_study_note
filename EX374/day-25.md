@@ -75,4 +75,39 @@ my_namespace.my_collection.phone_format          UNDOCUMENTED
 
 ```
 
+##### Using a custom filter.
+
+This is a sample playbook to test the custom filter we created above.
+
+```yaml
+---
+- name: demonstrating custom filter
+  hosts: vm1
+  gather_facts: no
+  vars:
+    number: '1234567890'
+  tasks:
+  - name: use a custom filter to format the number
+    debug:
+      msg: the number is {{ number | my_namespace.my_collection.phone_format }}
+```
+
+Output:
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook phonenumber.yml
+
+PLAY [demonstrating custom filter] *******************************************************************************************************************************************************************
+
+TASK [use a custom filter to format the number] ******************************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": "the number is (123) 456-7890"
+}
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+vm1                        : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
+
 
