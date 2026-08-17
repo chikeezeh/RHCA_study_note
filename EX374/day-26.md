@@ -30,4 +30,15 @@ The prompt asks for an input, however this is treated as a `string` object, to b
 
 ```
 
+#### Some common filters
 
+- `mandatory` fails a play if a variable doesn't have a value
+- `default` will set a variable with a default value, `{{ my_var | default(myvalue, True) }}` the default value is `True` if `myvalue` is empty. 
+- `capitalize` will capitalize a string
+- `int` convert a variable to an integer
+- `float` convert a variable to a float
+- `+ - / * ` will perform basic calculations. 
+- `union` creates a single list from multiple values.
+- `random` extracts a randome element from a list.
+- `sort` will sort a list. 
+- `password_hash` creates a password hash   
