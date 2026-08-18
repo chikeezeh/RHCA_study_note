@@ -722,3 +722,125 @@ vm2                        : ok=6    changed=0    unreachable=0    failed=0    s
 ```
 
 </details>
+
+##### `flatten` filter.
+
+This is used recursively search nested list items and flattens them into one list.
+
+See example playbook below, multi level nested list is created using ansible_facts and other variables, using the `flatten` filter we can recursively flatten completely, or pick the level we want to go down to. 
+
+```yaml
+---
+- name: Test the Ansible flatten filter with nested facts
+  hosts: vm1
+  tasks:
+  - name: Display raw nested fact structure
+    ansible.builtin.debug:
+      msg:
+        - "Extracting IPv4 addresses from all interfaces results in nested lists:"
+        - "{{ ansible_facts.network_resources | default({}) }}"
+        - "{{ ansible_facts.interfaces | map('extract', ansible_facts, ['ipv4', 'address']) | list }}"
+  - name: Create a custom nested structure using discovered facts
+    ansible.builtin.set_fact:
+      nested_fact_data:
+        - "{{ ansible_facts['all_ipv4_addresses'] }}"
+        - [ "{{ ansible_facts['fqdn'] }}", ["dns_servers", "{{ ansible_facts['dns']['nameservers'] | default([]) }}"] ]
+        - - "custom_tag_1"
+          - [ "deeply_nested_tag_2", "deeply_nested_tag_3" ]
+  - name: Show original nested fact
+    ansible.builtin.debug:
+      var: nested_fact_data
+
+  - name: Flatten the nested list completely (recursive by default)
+    ansible.builtin.debug:
+      msg: "{{ nested_fact_data | flatten }}"
+
+  - name: Flatten only 1 level deep using levels parameter
+    ansible.builtin.debug:
+      msg: "{{ nested_fact_data | flatten(levels=1) }}"
+```
+Output:
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook flatlist2.yaml
+
+PLAY [Test the Ansible flatten filter with nested facts] *********************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Display raw nested fact structure] *************************************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": [
+        "Extracting IPv4 addresses from all interfaces results in nested lists:",
+        {},
+        [
+            "10.10.10.5",
+            "127.0.0.1"
+        ]
+    ]
+}
+
+TASK [Create a custom nested structure using discovered facts] ***************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Show original nested fact] *********************************************************************************************************************************************************************
+ok: [vm1] => {
+    "nested_fact_data": [
+        [
+            "10.10.10.5"
+        ],
+        [
+            "vm1.cezeh.lab",
+            [
+                "dns_servers",
+                [
+                    "8.8.8.8"
+                ]
+            ]
+        ],
+        [
+            "custom_tag_1",
+            [
+                "deeply_nested_tag_2",
+                "deeply_nested_tag_3"
+            ]
+        ]
+    ]
+}
+
+TASK [Flatten the nested list completely (recursive by default)] *************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": [
+        "10.10.10.5",
+        "vm1.cezeh.lab",
+        "dns_servers",
+        "8.8.8.8",
+        "custom_tag_1",
+        "deeply_nested_tag_2",
+        "deeply_nested_tag_3"
+    ]
+}
+
+TASK [Flatten only 1 level deep using levels parameter] **********************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": [
+        "10.10.10.5",
+        "vm1.cezeh.lab",
+        [
+            "dns_servers",
+            [
+                "8.8.8.8"
+            ]
+        ],
+        "custom_tag_1",
+        [
+            "deeply_nested_tag_2",
+            "deeply_nested_tag_3"
+        ]
+    ]
+}
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+vm1                        : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
