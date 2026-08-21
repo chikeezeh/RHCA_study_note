@@ -35,3 +35,13 @@ ansible.utils.index_of              Find the indices of items in a list matching
 ansible.utils.to_paths              Flatten a complex object into a dictionary of paths and values
 ansible.utils.validate              Validate data with provided criteria
 ```
+
+##### Common Ansible Plugin Types
+
+- `action` : Used behind the scenes when using modules from playbooks
+- `cache` : cache inventory or facts, helps to optimize playbook speed.
+- `callback`: control playbook output
+- `filter` : manipulates variable and text values
+- `inventory`: dynamically generates inventory
+- `lookup`: used to access data from external resources
+- `test`: used in conditional statements
