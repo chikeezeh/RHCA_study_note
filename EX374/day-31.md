@@ -37,3 +37,43 @@ vm1                        : ok=2    changed=0    unreachable=0    failed=0    s
 vm2                        : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
+#### Using the `fileglob` lookup plugin
+
+Used to iterate over a list of files according to a globbing pattern. See example below;
+
+```yaml
+---
+- name: testing fileglob plugin
+  hosts: vm1, vm2
+  tasks:
+  - name: show file in a path
+    debug:
+      msg: "These are the files: {{ query('fileglob', '/home/ansible/ansible_work/f*.yml')  }}"
+
+```
+
+Output:
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook fileglob.yml
+
+PLAY [testing fileglob plugin] *******************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm2]
+ok: [vm1]
+
+TASK [show file in a path] ***********************************************************************************************************************************************************************************
+ok: [vm1] => {
+    "msg": "These are the files: ['/home/ansible/ansible_work/fail.yml', '/home/ansible/ansible_work/findfiles.yml', '/home/ansible/ansible_work/fileglob.yml', '/home/ansible/ansible_work/factnot.yml', '/home/ansible/ansible_work/failure.yml']"
+}
+ok: [vm2] => {
+    "msg": "These are the files: ['/home/ansible/ansible_work/fail.yml', '/home/ansible/ansible_work/findfiles.yml', '/home/ansible/ansible_work/fileglob.yml', '/home/ansible/ansible_work/factnot.yml', '/home/ansible/ansible_work/failure.yml']"
+}
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm1                        : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+vm2                        : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
