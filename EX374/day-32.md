@@ -40,7 +40,7 @@ You can use the following command to convert from `ini` to `yaml` based inventor
 
 `ansible-inventory --yaml -i inventory --list --output inventory.yaml`
 
-Note; the above command will try to put the variables defined for groups and hosts in the inventory file, so make sure to verify that the variables are accurate. 
+
 
 > [!CAUTION]
 >$\color{red}{\text{Note; the above command will try to put the variables defined for groups and hosts in the inventory file, so make sure to verify that the variables are accurate.}}$
@@ -68,3 +68,23 @@ ansible@control:~/ansible_work$
 
 The enabled plugins are found in the `[inventory]` section of the `ansible.cfg` in your project directory. The line to edit is;
 `enable_plugins = host_list, script, ini, auto, yaml, ini, toml`
+
+#### Fact Caching
+
+To optimize the execution time of playbooks, we can cache the facts so that we don't need to gather facts everytime a play executes, hence the playbook runs faster. However, this means that we might have outdated facts for rapidly changing values suchs `"ansible_memfree_mb`. 
+
+Example steps for fact caching.
+
+Note, `redis` is no longer available for rhel10, however the steps will work for rhel9.
+
+- install `redis` `sudo dnf install redis -y`
+- start the redis service `sudo systemctl enable --now redis`
+- Install the python dependency `pip3 install redis`
+- edit the ansible.cfg file with;
+    ```yaml
+    fact_caching = redis
+    fact_caching_timeout = 3600
+    fact_caching_connection = localhost:6379:0
+
+    ```
+
