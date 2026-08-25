@@ -45,3 +45,26 @@ Note; the above command will try to put the variables defined for groups and hos
 > [!CAUTION]
 >$\color{red}{\text{Note; the above command will try to put the variables defined for groups and hosts in the inventory file, so make sure to verify that the variables are accurate.}}$
 
+#### Inventory sources.
+
+Use the command `ansible-doc -t inventory -l` to get a list of inventory sources available on the control node.
+
+Sample output:
+
+```shell
+ansible-doc -t inventory -l
+ansible.builtin.advanced_host_list Parses a 'host list' with ranges
+ansible.builtin.auto               Loads and executes an inventory plugin specified in a YAML config
+ansible.builtin.constructed        Uses Jinja2 to construct vars and groups based on existing inventory
+ansible.builtin.generator          Uses Jinja2 to construct hosts and groups from patterns
+ansible.builtin.host_list          Parses a 'host list' string
+ansible.builtin.ini                Uses an Ansible INI file as inventory source
+ansible.builtin.script             Executes an inventory script that returns JSON
+ansible.builtin.toml               Uses a specific TOML file as an inventory source
+ansible.builtin.yaml               Uses a specific YAML file as an inventory source
+ansible@control:~/ansible_work$
+
+```
+
+The enabled plugins are found in the `[inventory]` section of the `ansible.cfg` in your project directory. The line to edit is;
+`enable_plugins = host_list, script, ini, auto, yaml, ini, toml`
