@@ -77,9 +77,9 @@ Example steps for fact caching.
 
 Note, `redis` is no longer available for rhel10, however the steps will work for rhel9.
 
-- install `redis` `sudo dnf install redis -y`
-- start the redis service `sudo systemctl enable --now redis`
-- Install the python dependency `pip3 install redis`
+- install `redis` `sudo dnf install redis -y`, `sudo dnf install valkey` for rhel10.
+- start the redis service `sudo systemctl enable --now redis` or `sudo systemctl enable --now valkey`
+- Install the python dependency `pip3 install redis` 
 - edit the ansible.cfg file with;
     ```yaml
     fact_caching = redis
@@ -87,4 +87,6 @@ Note, `redis` is no longer available for rhel10, however the steps will work for
     fact_caching_connection = localhost:6379:0
 
     ```
+- install `community.general` collection, note use the version that works with your ansible version. `ansible-galaxy collection install 'community.general:>=9.0.0,<10.0.0'`
 
+Once redis is configured for fact caching, run the setup module, and the `ansible_facts` should be cached to memory.
