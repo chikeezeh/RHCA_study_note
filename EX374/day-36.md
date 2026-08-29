@@ -11,3 +11,7 @@ This is a collection of teams, projects, and inventories. For a large company wi
 - `System Administrator` has `read/write` access to the entire Tower installation.
 - `system Auditor` has `read` only access to the entire installation
 - `Normal users` has `minimal` access, and must be provided with access by adding roles to the user. 
+
+##### Understanding Teams
+A group of users make up a team, teams exist at an organizational level. System Administrator can assign `users` the `team` roles on resources in different `organizations`.
+
