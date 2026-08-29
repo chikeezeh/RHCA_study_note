@@ -15,3 +15,17 @@ This is a collection of teams, projects, and inventories. For a large company wi
 ##### Understanding Teams
 A group of users make up a team, teams exist at an organizational level. System Administrator can assign `users` the `team` roles on resources in different `organizations`.
 
+##### Organization Roles
+
+These are the different roles available and can be connected to the users, these can be assigned by organizational or project scope. 
+- Organizational admin
+- Project admin
+- Inventory admin
+- Credential admin
+- Notification admin
+- Workflow admin
+- Job Template admin
+- Auditor
+- Member
+- Read
+- Execute
