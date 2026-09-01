@@ -4,4 +4,4 @@
   tasks:
   - name: Say hello world.
     debug:
-      msg: Hello World
+      msg: Hello World, from {{ user_name }}
