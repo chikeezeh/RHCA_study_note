@@ -13,6 +13,10 @@ To use the above created project, head back to job template you want to use, and
 
 ![Project Template](images/project_template.jpg)
 
+In addition, when the github repository has been modified, we can go into projects and click on `Sync project` button to get the latest files. 
+
+![Sync project](images/sync_project.jpg)
+
 #### Configuring ssh access from AAP to managed nodes.
 
 Similar to how we configured ssh keys on a control node, AAP also requires passwordless ssh connectivity to the managed hosts. We start by generating a private/public ssh keys as performed in the control node setup, the copy the keys over to the managed node. On AAP web gui, go to `Automation Execution`  &rarr; `Infrastructure`  &rarr; `Credentials` then click on `Create credential` as shown below.
