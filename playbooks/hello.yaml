@@ -1,0 +1,7 @@
+---
+- name: This is just an introductory helloworld playbook
+  hosts: all
+  tasks:
+  - name: Say hello world.
+    debug:
+      msg: Hello World
