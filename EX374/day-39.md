@@ -20,3 +20,7 @@ Select the notification type, and fill out the form accordingly. For email notif
 To use the newly created notification, go back to templates, select the template you want to use, then go to the notification tab, you will see the notifications you have created. Select start to enable that notification for that template.
 
 ![Notifier Use](images/notifier_use.jpg)
+
+#### Workflow templates
+
+Workflow are used to chain multiple job templates together, this allows for more complex logics, such as running a separate job when an earlier job succeeds or fails. To create a workflow, you need to create a `workflow job template` first, 
