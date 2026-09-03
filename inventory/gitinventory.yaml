@@ -1,0 +1,6 @@
+all:
+  children:
+    ungrouped:
+      hosts:
+        vm1: {}
+        vm2: {}
