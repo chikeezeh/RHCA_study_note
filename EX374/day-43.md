@@ -27,4 +27,12 @@ This will automatically grab only the hosts that are `RedHat` distribution.
 
 ![Smart hosts](images/smart_hosts.jpg)
 
+#### Using Vault in AAP.
+
+I created a [playbook](../playbooks/vaulted.yaml) that is currently encrypted with a vault password. To decrypt and run the playbook, I will need to first created a vault credential that has the password, then I can use that credential in a job template to run the playbook.
+
+![Vault Credential](images/vault_form.jpg)
+
+![Vaulted](images/vaulted.jpg)
+
 
