@@ -39,3 +39,29 @@ Use the command below to get the status of a job.
 `curl -ks -X GET -u "$username:$password" https://tower.cezeh.lab/api/controller/v2/jobs/${Job_ID}/ | jq .`
 
 
+Playbooks can be used to make API request by utilizing the `uri` module, below is a dummy playbook that can be used, note sensitive data will need to be stored in ansible-vault, and the correct credentials can be used when running the playbooks. 
+
+```yaml
+---
+- name: use tower API to launch a job
+  hosts: localhost
+  become: false
+  vars:
+    tower_host: tower.cezeh.lab
+    tower_job: fact_cache
+  vars_files:
+  # this will contain tower_user and tower_pass in an ansible-vault file
+  - supersecretfile
+  tasks:
+  - name: launch {{ tower_job }}
+    uri:
+      url: https://{{ tower_host }}/api/controller/v2/job_templates/{{ tower_job }}/launch/
+      method: POST
+      validate_certs: no
+      return_content: yes
+      user: "{{ tower_user }}"
+      password: "{{ tower_pass }}"
+      force_basic_auth: yes
+      status_code: 201
+
+```
