@@ -22,3 +22,20 @@ Also, you can make the output of the API more readable by either using `jq` or `
    "description" : "AAP gateway REST API"
 }
 ```
+Some, API request requires authentication, for example, we can make an API request to run a job template. The command for doing that is;
+
+`curl -ks -X POST -u "$username:$password" https://tower.cezeh.lab/api/controller/v2/job_templates/${TEMPLATE_ID}/launch/ | jq .`
+
+Here, `-k` Tells curl to skip SSL/TLS certificate validation. This allows the connection to succeed even if the target server uses a self-signed, untrusted, or expired certificate (common in internal .lab environments).
+
+`-s` (or `--silent`): Enables silent/quiet mode. It suppresses progress meters, download statistics, and general status messages from being printed to the terminal.
+
+`-X` Specifies the custom HTTP request method to send to the server (e.g., `POST`, `GET`, `PUT`, `DELETE`, `PATCH`).
+
+`-u` (or `--user`): Specifies the username and password used for server authentication, formatted as `username:password`.
+
+Use the command below to get the status of a job.
+
+`curl -ks -X GET -u "$username:$password" https://tower.cezeh.lab/api/controller/v2/jobs/${Job_ID}/ | jq .`
+
+
