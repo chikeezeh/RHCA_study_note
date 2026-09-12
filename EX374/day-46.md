@@ -35,3 +35,30 @@ Note that while running the backup command, we can pass variables in the command
 ```shell
 ansible-playbook -i inventory ansible.containerized_installer.backup -e "backup_dir=/var/backups/aap"
 ```
+
+#### Restoring from backups
+
+Stop the active containers to prevent write conflicts during the database restore:
+
+`podman pod stop --all`
+
+Verify no AAP service containers are actively writing to the databases:
+`podman ps`, this should be empty.
+
+Run the containerized installer's restore playbook against your inventory file, passing the backup location using backup_dir:
+
+```shell
+ansible-playbook -i inventory ansible.containerized_installer.restore \
+-e "backup_dir=/path/to/installer/backups/<backup_folder_or_name>"
+```
+
+Example:
+
+```shell
+ansible-playbook -i inventory ansible.containerized_install.restore -e "backup_dir=/home/ansible/ansible-automation-platform-containerized-setup-2.5-25/backups"
+```
+The above command will be run from the install directory:
+`/home/ansible/ansible-automation-platform-containerized-setup-2.5-25/`
+
+
+
