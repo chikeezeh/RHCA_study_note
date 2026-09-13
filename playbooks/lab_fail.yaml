@@ -1,0 +1,6 @@
+---
+- name: Executes when original job fails.
+  hosts: vm1
+  tasks:
+  - debug:
+      msg: failed to create a user  

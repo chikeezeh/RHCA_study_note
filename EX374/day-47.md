@@ -9,4 +9,8 @@ Create a `Job Template Worklow` that meets the following requirements:
 - If the job executes successfully, another job should run that creates the directory `/${USER}files` and sets the user you created as owner to that directory
 - If the job fails to execute, a dedicated job should run that prints the message `"failed to create a user"`.
 
+##### Solution:
+We need 3 playbooks, the simplest to create is the [error message playbook](../playbooks/lab_fail.yaml).
+
+
 
