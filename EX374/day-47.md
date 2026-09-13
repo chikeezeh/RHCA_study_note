@@ -12,5 +12,7 @@ Create a `Job Template Worklow` that meets the following requirements:
 ##### Solution:
 We need 3 playbooks, the simplest to create is the [error message playbook](../playbooks/lab_fail.yaml).
 
+The next playbook is the one that [creates the file](../playbooks/lab_createfile.yaml), since we are using `Job Template workflow` We don't need to do any error checking, this will be handled by workflow, since this playbook will on run when the user has been created. We will use a prompt in the workflow that assigns the same `user_name` variable. 
+
 
 
