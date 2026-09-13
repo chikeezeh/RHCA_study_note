@@ -33,3 +33,8 @@ Lab fail worked.
 ![Lab fail](images/lab_fail.jpg)
 
 
+Lab pass worked too. 
+
+![Lab pass](images/lab_pass.jpg)
+
+Lab completed!
