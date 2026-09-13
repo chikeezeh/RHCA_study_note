@@ -2,12 +2,12 @@
 - name: Create a user
   hosts: vm1
   tasks: 
-  - name: Trigger a failure
-    ansible.builtin.fail:
-      msg: "Intentional failure"
-  # - name: Create the {{ user_name }} user.
-  #   ansible.builtin.user:
-  #     name: "{{ user_name }}"
-  #     password: "{{ user_passwd | password_hash('sha512') }}"
-  #     update_password: on_create
+  # - name: Trigger a failure
+  #   ansible.builtin.fail:
+  #     msg: "Intentional failure"
+  - name: Create the {{ user_name }} user.
+    ansible.builtin.user:
+      name: "{{ user_name }}"
+      password: "{{ user_passwd | password_hash('sha512') }}"
+      update_password: on_create
 

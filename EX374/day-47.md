@@ -28,4 +28,8 @@ Created the workflow vizualizer as shown below.
 
 To test the fail, I will change the create_user playbook to trigger a failure immediately.
 
+Lab fail worked.
+
+![Lab fail](images/lab_fail.jpg)
+
 
