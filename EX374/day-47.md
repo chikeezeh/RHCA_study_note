@@ -16,4 +16,16 @@ The next playbook is the one that [creates the file](../playbooks/lab_createfile
 
 Finally, we create the [playbook](../playbooks/lab_createuser.yaml) that creates the user.
 
+We will create a `job template` for the 3 plays, then link them together in the `Job Template Worklow`.
+
+Create the workflow with 2 required survey questions as shown below.
+
+![Survey questions](images/lab_survey.jpg)
+
+Created the workflow vizualizer as shown below.
+
+![Lab visualizer](images/lab_visualizer.jpg)
+
+To test the fail, I will change the create_user playbook to trigger a failure immediately.
+
 
