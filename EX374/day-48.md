@@ -14,3 +14,13 @@ ansible_connection=winrm
 ansible_winrm_server_cert_validation=ignore
 ```
 - For `ansible.cfg`, `[privilege_escalation]` isn't required, because the `ansible_user` is an administrative user. 
+
+##### Useful Windows Modules
+
+`ansible.windows.win_command`: runs a command (not idempotent)
+`ansible.windows.win_shell`: runs powershell commands
+`ansible.windows.win_package`: installs software from executables
+`ansible.windows.win_feature`: Manages system roles or Windows features
+`ansible.windows.win_update`: Updates Windows
+`ansible.windows.win_reboot`: reboots Windows
+`ansible.windows.win_format`: formats storage devices
