@@ -1,0 +1,16 @@
+#### Managing Windows with Ansible.
+
+This isn't  required learning for the RHCA if skipping EX417, so this section will be light just to have this as a tool in my tool belt. I won't be doing any labs for this. 
+
+##### Requirements for managing windows.
+- All recent Windows are supported by Ansible.
+- Remote management is required for Ansible, no ssh.
+- The following variables are required.
+```ini
+[win:vars]
+ansible_user=<user>
+ansible_password=<passowrd>
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+```
+- For `ansible.cfg`, `[privilege_escalation]` isn't required, because the `ansible_user` is an administrative user. 
