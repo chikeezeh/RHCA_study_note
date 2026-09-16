@@ -112,4 +112,47 @@ vm4
 ```
 
 
+##### Installing and starting a docker container on RHEL9
 
+This is a bit more involved, since we can't just install the docker daemon from the default repository. Please check this playbook for details on installation and starting a container.
+
+Output:
+
+```shell
+[ansible@control ansible_work]$ ansible-playbook docker_rhel.yaml
+[WARNING]: Collection community.docker does not support Ansible version 2.16.19
+
+PLAY [Install and Configure Docker CE on RHEL 9] *****************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Remove conflicting default container packages] *************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Install DNF core plugins and Python tools] *****************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Add official Docker CE CentOS/RHEL repository] *************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Install Docker CE packages] ********************************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Ensure Docker service is enabled and started] **************************************************************************************************************************************************
+ok: [vm1]
+
+TASK [Install Docker SDK for Python (required for community.docker tasks)] ***************************************************************************************************************************
+changed: [vm1]
+
+TASK [create a container] ****************************************************************************************************************************************************************************
+changed: [vm1]
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+vm1                        : ok=8    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ansible@control ansible_work]$ ansible vm1 -m shell -a "docker exec -it my-redis redis-cli ping"
+vm1 | CHANGED | rc=0 >>
+PONG
+
+```

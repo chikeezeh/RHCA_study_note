@@ -1,0 +1,59 @@
+---
+- name: Install and Configure Docker CE on RHEL 9
+  hosts: vm1
+  tasks:
+  - name: Remove conflicting default container packages
+    ansible.builtin.dnf:
+      name:
+      - podman
+      - buildah
+      - runc
+      - docker
+      state: absent
+
+  - name: Install DNF core plugins and Python tools
+    ansible.builtin.dnf:
+      name:
+      - dnf-plugins-core
+      - python3
+      - python3-pip
+      state: present
+
+  - name: Add official Docker CE CentOS/RHEL repository
+    ansible.builtin.yum_repository:
+      name: docker-ce-stable
+      description: Docker CE Stable - $basearch
+      baseurl: https://download.docker.com/linux/centos/9/$basearch/stable
+      enabled: true
+      gpgcheck: true
+      gpgkey: https://download.docker.com/linux/centos/gpg
+
+  - name: Install Docker CE packages
+    ansible.builtin.dnf:
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      state: present
+
+  - name: Ensure Docker service is enabled and started
+    ansible.builtin.systemd:
+      name: docker
+      state: started
+      enabled: true
+
+  - name: Install Docker SDK for Python (required for community.docker tasks)
+    ansible.builtin.pip:
+      name: docker
+      state: present
+
+  - name: create a container
+    community.docker.docker_container:
+      name: my-redis
+      image: redis:alpine
+      state: started
+      restart_policy: unless-stopped
+      published_ports:
+        - "6380:6379"
