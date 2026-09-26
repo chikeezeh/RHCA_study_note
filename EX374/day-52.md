@@ -11,3 +11,8 @@ Note that connecting to network devices, sometime ssh doesn't work, so we will n
 With persistent connections, you can define the hosts and credentials only once, rather than in every task. 
 
 
+##### How Network Automation is different
+- Modules are executed on the control node, because the network device doesn't have python installed.
+- Since the modules are running on the control node, the maximum number of forks should be 5.
+- If a backup configuration is defined, this backup is also stored in the control node.
+
