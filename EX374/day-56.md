@@ -90,3 +90,21 @@ total 8
 -rw-r--r--. 1 ansible ansible  1 Sep 28 16:02 remotefile
 -rw-r--r--. 1 ansible ansible  0 Sep 29 05:47 secondfile
 ```
+
+###### Branching Practice Questions
+1. Create a new branch named feature-update. Create the branch and switch to it. Ans: `git switch -c feature-update`
+2. Make a file named config.txt in the cloned repository, add sample configuration details, and commit the file with the message "Add initial config".
+Ans:
+`vim config.txt` add the sample configuration, then commit with `git add .` followed by `git commit -m "Add initial config"`. 
+3. Modify the config.txt file to add a new configuration port=8080. Update the file and commit with the message "Add port configuration".
+Ans: Edit the file to add the new config. Then, `git add .`, followed by `git commit -m " Add port configuration"`. 
+4. Push your changes from the feature-update branch to the remote repository.
+Ans: Use `git push origin feature-update`, this will move it to the remote repository, I merged it with the `main` branch using a pull request in the remote UI. 
+5. Check the history of commits in the repository. Display a concise log of the last 3 commits.
+Ans: 
+```shell
+[ansible@tower ansible-lab (main)]$ git log -n3 --oneline
+035bb43 (HEAD -> main, origin/main, origin/HEAD) Merge pull request #1 from chikeezeh/feature-update
+5d68f43 (origin/feature-update, feature-update) Add port configuration
+610dd4e Add initial config
+```
