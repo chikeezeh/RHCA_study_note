@@ -42,3 +42,42 @@ frontend-2 | SUCCESS => {
 
 
 </details>
+
+###### Exercise 4 — per-host user and port.
+
+vm4 is Ubuntu and must be reached over SSH as the user ubuntu; vm2 must be contacted on port 2222. Configure both as per-host overrides, then demonstrate the settings actually took effect.
+
+Solution:
+
+<details>
+  <summary>Click to reveal Solution</summary>
+
+Modify the inventory file first. See the new inventory file content below:
+
+```shell
+[ansible@tower drill1]$ cat inventory
+[web]
+frontend-1 ansible_host=vm1
+frontend-2 ansible_host=vm2 ansible_port=2222
+[ubuntu]
+vm4 ansible_user=ubuntu
+```
+
+
+Test the new variables added. 
+
+```shell
+[ansible@tower drill1]$ ansible-inventory -i inventory --host vm4
+{
+    "ansible_user": "ubuntu"
+}
+[ansible@tower drill1]$ ansible -i inventory frontend-2 -m ping
+frontend-2 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host vm2 port 2222: No route to host",
+    "unreachable": true
+}
+
+```
+
+</details>
