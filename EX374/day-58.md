@@ -174,3 +174,9 @@ ssh_max_auth_tries: 4
 ```
 
 </details>
+
+#### Reflection
+
+1. When creating the host variable file, use the alias name in the inventory file to create the host directory, and not the actual hostname. This is useful in a dynamic environment where the hostname could change, but we want it to still have access to those variables.
+2. Use the `ansible-inventory` command to peek into the variables that a host has access to. 
+
