@@ -56,3 +56,53 @@ web_packages:
 
   
 </details>
+
+
+###### Exercise 2 — host_vars as a directory. 
+
+Create host_vars/web1/ with two files: app.yml (app_name: shop) and tuning.yml (max_workers: 8). The same --host web1 check should now show four variables (two from the group files, two from the host files). Then add http_port: 9090 to tuning.yml and confirm it beats the group's 8080 — that's host_vars outranking group_vars.
+
+Solution:
+
+<details>
+  <summary>Click to reveal Solution</summary>
+
+Condensed steps shown:
+
+```shell
+[ansible@tower drill1]$ mkdir -p host_vars/vm1
+[ansible@tower drill1]$ vim host_vars/vm1/app.yml
+[ansible@tower drill1]$ vim host_vars/vm1/tuning.yml
+[ansible@tower drill1]$ ansible-inventory -i inventory --host vm1
+{
+    "app_name": "shop",
+    "http_port": 8080,
+    "max_workers": 8,
+    "web_packages": [
+        "httpd",
+        "firewalld"
+    ]
+}
+
+```
+Then change the `http_port` variable.
+
+```shell
+[ansible@tower drill1]$ echo "http_port: 9090" >> host_vars/vm1/tuning.yml
+[ansible@tower drill1]$ cat host_vars/vm1/tuning.yml
+max_workers: 8
+http_port: 9090
+[ansible@tower drill1]$ ansible-inventory -i inventory --host vm1
+{
+    "app_name": "shop",
+    "http_port": 9090,
+    "max_workers": 8,
+    "web_packages": [
+        "httpd",
+        "firewalld"
+    ]
+}
+```
+The host level variable supercedes the group level variable. 
+
+</details>
