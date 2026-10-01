@@ -81,3 +81,96 @@ frontend-2 | UNREACHABLE! => {
 ```
 
 </details>
+
+
+###### Exercise 5 — Capstone
+
+Structure your inventory file and variable files to have the outcome below:
+
+group_vars/all/ — common.yml: ntp_server, admin_email / security.yml: firewall_enabled, ssh_max_auth_tries
+group_vars/web/ — packages.yml: web_packages: [httpd, firewalld] / config.yml: http_port: 8080
+group_vars/db/config.yml — db_engine: mariadb, db_port: 3306
+host_vars/vm1/tuning.yml — max_workers: 8
+host_vars/vm2/tuning.yml — max_workers: 4
+host_vars/vm3/tuning.yml — db_port: 3308 (overrides the group's 3306)
+host_vars/vm4/ — one file with something Ubuntu-specific, e.g. app.yml with cache_dir: /var/cache/app, plus the ansible_user=ansible override (inventory line or host_vars, your choice)
+
+Solution:
+
+<details>
+  <summary>Click to reveal Solution</summary>
+
+Below is the structure of my project directory, with the required group and host files. 
+
+```shell
+[ansible@tower drill1]$ tree
+.
+├── group_vars
+│   ├── all
+│   │   ├── common.yml
+│   │   └── security.yml
+│   ├── db
+│   │   └── config.yml
+│   └── web
+│       ├── config.yml
+│       └── packages.yml
+├── host_vars
+│   ├── frontend-1
+│   │   ├── app.yml
+│   │   └── tuning.yml
+│   ├── frontend-2
+│   │   └── tuning.yml
+│   ├── vm3
+│   │   └── tuning.yml
+│   └── vm4
+│       └── app.yml
+├── inventory
+└── testgroupvars.yml
+
+9 directories, 12 files
+
+```
+These are the variables that all the hosts have access to, include host level overides. 
+
+```shell
+[ansible@tower drill1]$ ansible-inventory -i inventory --host frontend-1 --yaml
+admin_email: ansible@cezeh.lab
+ansible_host: vm1
+app_name: shop
+firewall_enabled: true
+http_port: 8080
+max_workers: 8
+ntp_server: 1.1.1.1
+ssh_max_auth_tries: 4
+web_packages:
+- httpd
+- firewalld
+[ansible@tower drill1]$ ansible-inventory -i inventory --host frontend-2 --yaml
+admin_email: ansible@cezeh.lab
+ansible_host: vm2
+firewall_enabled: true
+http_port: 8080
+max_workers: 4
+ntp_server: 1.1.1.1
+ssh_max_auth_tries: 4
+web_packages:
+- httpd
+- firewalld
+[ansible@tower drill1]$ ansible-inventory -i inventory --host vm3 --yaml
+admin_email: ansible@cezeh.lab
+db_engine: mariadb
+db_port: 3308
+firewall_enabled: true
+ntp_server: 1.1.1.1
+ssh_max_auth_tries: 4
+[ansible@tower drill1]$ ansible-inventory -i inventory --host vm4 --yaml
+admin_email: ansible@cezeh.lab
+ansible_user: ansible
+cache_dir: /var/cache/app
+firewall_enabled: true
+ntp_server: 1.1.1.1
+ssh_max_auth_tries: 4
+
+```
+
+</details>
