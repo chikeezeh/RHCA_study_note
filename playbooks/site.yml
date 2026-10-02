@@ -1,0 +1,24 @@
+---
+- name: using tags to control playbook tasks
+  hosts: web
+  become: True
+  tasks:
+  - name: install httpd
+    dnf:
+      name: "{{ web_packages[0] }}"
+      state: latest
+    tags: package
+  - name: configure httpd
+    copy:
+      dest: /etc/httpd/conf.d/custom.conf
+      content: |
+        # Managed by Ansible
+        ServerTokens Prod
+        ServerSignature Off
+    tags: config
+  - name: start and enable httpd
+    service:
+      name: "{{ web_packages[0] }}"
+      state: started
+      enabled: yes
+    tags: service
