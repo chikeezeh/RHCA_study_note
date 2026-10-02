@@ -3,8 +3,10 @@
 
 - Structure host and group variables using multiple files per host or group
 - Use special variables to override the host, port, or remote user for a specific host
+- Set up directories containing multiple host variable files for managed hosts
+- Override names used in inventory files with a different name or IP address
 
-Performing some exercises to drill and practice the two exam objectives above. All of these will be performed on the CLI and not on AAP. 
+Performing some exercises to drill and practice the exam objectives above. All of these will be performed on the CLI and not on AAP.  
 
 ##### Manage inventory variables drill questions - continued
 
