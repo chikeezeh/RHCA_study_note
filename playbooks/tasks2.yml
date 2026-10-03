@@ -1,0 +1,21 @@
+---
+- name: testing become user
+  hosts: vm3
+  tasks:
+  - name: first task, running whoami
+    shell:
+      cmd: whoami
+    become: true
+    become_user: nobody
+    register: output
+    tags: identity
+  - name: show output
+    debug:
+      var: output
+  - name: second task, file test
+    file:
+      dest: /tmp/nobody-test.txt
+      state: touch
+    become: true
+    become_user: nobody
+    tags: filetest

@@ -99,3 +99,67 @@ frontend-2                 : ok=3    changed=0    unreachable=0    failed=0    s
 
 
 </details>
+
+
+###### Task 2 — become_user. 
+
+Add a task tagged `identity` that runs `whoami` with `become: true` and `become_user: nobody`, registers the output, and debugs it. Add a second task tagged `filetest` that creates `/tmp/nobody-test.txt` as `become_user: nobody`. Verify: the debug output says nobody, and the file on the host is owned by nobody. 
+
+<details>
+
+<summary>Click to reveal Solution</summary>
+
+The two tasks are in [task2.yml](../playbooks/tasks2.yml) playbook. See the output of running the playbook below.
+
+```shell
+ansible-playbook -i inventory task2.yml
+
+PLAY [testing become user] ***********************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm3]
+
+TASK [first task, running whoami] ****************************************************************************************************************************************************************************
+[WARNING]: Unable to use /.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/.ansible'
+changed: [vm3]
+
+TASK [show output] *******************************************************************************************************************************************************************************************
+ok: [vm3] => {
+    "output": {
+        "changed": true,
+        "cmd": "whoami",
+        "delta": "0:00:00.003150",
+        "end": "2026-10-03 16:49:52.058903",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-10-03 16:49:52.055753",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "nobody",
+        "stdout_lines": [
+            "nobody"
+        ],
+        "warnings": [
+            "Unable to use /.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/.ansible'"
+        ]
+    }
+}
+
+TASK [second task, file test] ********************************************************************************************************************************************************************************
+changed: [vm3]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm3 
+```
+
+Verify that the owner of the created file is nobody.
+
+```shell
+[ansible@tower drill2]$ ansible vm3 -i inventory -m shell -a "ls -l /tmp/nobody-test.txt"
+vm3 | CHANGED | rc=0 >>
+-rw-r--r--. 1 nobody nobody 0 Oct  3 16:49 /tmp/nobody-test.txt
+```
+
+
+</details>
