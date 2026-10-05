@@ -108,3 +108,16 @@ I used the Sourced from a Project to import the inventory that is in the git rep
 
 </details>
 
+###### Task 5 — machine credential. 
+
+Create a Machine credential with the SSH username tower uses for the nodes and the private key (or password), and check Privilege Escalation since your playbook uses become. 
+
+<details>
+<summary>Click to open solution</summary>
+
+I re-used the machine credentials I created before, basically, I copied the private key that I created into the AAP UI. The public key was already copied to the remote hosts via CLI. 
+
+![machine credentials](images/machine_creds.jpg)
+
+</details>
+
