@@ -121,3 +121,20 @@ I re-used the machine credentials I created before, basically, I copied the priv
 
 </details>
 
+###### Task 6 — job template and launch. 
+
+Create a job template wiring it all together: inventory lab, project from Task 3, playbook site.yml, the machine credential, privilege escalation enabled. Launch it. 
+
+<details>
+
+<summary>Click to open solution </summary>
+
+See below the job template created. 
+
+![Capstone Template](images/capstone_template.jpg)
+
+After launching the job template, it succeeded. 
+
+![Capstone launch](images/capstone_run.jpg)
+
+</details>
