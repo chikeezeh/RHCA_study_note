@@ -66,3 +66,16 @@ git push origin main
 ```
 
 </details>
+
+###### Task 2 — SCM access. 
+
+Pick one: (a) generate an SSH key on tower (ssh-keygen), add the public key as a read-only Deploy Key on the GitHub repo; or (b) create a GitHub personal access token with repo scope. Then in AAP create a Source Control credential holding it — paste the private key for (a), or username + token-as-password for (b). Send me a screenshot of the credential's summary page.
+
+<details>
+<summary> Click to open solution </summary>
+
+I already had an ssh key pair between my AAP host and the private repository, so all I did was copy the private key into the UI of AAP. 
+
+![Git SCM](images/git_scm.jpg)
+
+</details>
