@@ -79,3 +79,32 @@ I already had an ssh key pair between my AAP host and the private repository, so
 ![Git SCM](images/git_scm.jpg)
 
 </details>
+
+
+###### Task 3 — project. 
+
+In AAP create a project: SCM type Git, URL matching your auth method (SSH URL for the key, HTTPS URL for the token), attach the SCM credential from Task 2. Save and sync.
+
+<details>
+<summary>Click to open solution </summary>
+
+See below, the project created with all the requirements.
+
+![git project](images/git_project.jpg)
+
+</details>
+
+###### Task 4 — inventory. 
+Create an inventory called lab and add four hosts: vm1, vm2, vm3, vm4. Set any needed host variables in the UI (e.g. ansible_user if a host differs)
+
+<details>
+<summary>Click to open solution</summary>
+
+I used the Sourced from a Project to import the inventory that is in the git repository since that contains the hosts. 
+
+![git source](images/git_source.jpg)
+
+![inventory host](images/inventory_hosts.jpg)
+
+</details>
+
