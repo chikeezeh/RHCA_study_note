@@ -167,3 +167,65 @@ vm3 | CHANGED | rc=0 >>
 ###### Task 3 — capstone
 
 Write deploy.yml with two plays. Play 1 (tag users): create a user called deployer (needs become). Play 2 (tag appfiles): with become_user: deployer, create /tmp/deployer-proof.txt. Run --tags users first, then --tags appfiles, and prove the file is owned by deployer. Then run the whole playbook again with --skip-tags users — it must still succeed, because the user already exists. Tags + become + become_user + idempotency, all in one run.
+
+<details>
+
+<summary>Click to reveal Solution</summary>
+
+See [deploy.yml](../playbooks/deploy.yml) for solution to the capstone question. Below is the console output from running the playbook. 
+
+```shell
+[ansible@tower drill2]$ ansible-playbook -i inventory deploy.yml --tags users
+
+PLAY [Create a user] *****************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm3]
+
+TASK [Create the user deployer] ******************************************************************************************************************************************************************************
+changed: [vm3]
+
+PLAY [Create app files] **************************************************************************************************************************************************************************************
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm3                        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ansible@tower drill2]$ ansible-playbook -i inventory deploy.yml --tags appfiles
+
+PLAY [Create a user] *****************************************************************************************************************************************************************************************
+
+PLAY [Create app files] **************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+[WARNING]: Module remote_tmp /home/deployer/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create the remote_tmp dir with
+the correct permissions manually
+ok: [vm3]
+
+TASK [create a file] *****************************************************************************************************************************************************************************************
+changed: [vm3]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm3                        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ansible@tower drill2]$ ansible-playbook -i inventory deploy.yml --skip-tags users
+
+PLAY [Create a user] *****************************************************************************************************************************************************************************************
+
+PLAY [Create app files] **************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [vm3]
+
+TASK [create a file] *****************************************************************************************************************************************************************************************
+changed: [vm3]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+vm3                        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ansible@tower drill2]$ ansible vm3 -i inventory -m shell -a "ls -l /tmp/deployer-proof.txt"
+vm3 | CHANGED | rc=0 >>
+-rw-r--r--. 1 deployer deployer 0 Oct  5 09:29 /tmp/deployer-proof.txt
+
+```
+
+</details>

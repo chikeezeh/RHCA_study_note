@@ -1,0 +1,20 @@
+---
+- name: Create a user
+  hosts: vm3
+  become: true
+  tasks:
+  - name: Create the user deployer
+    user:
+      name: deployer
+      state: present
+  tags: users
+- name: Create app files
+  hosts: vm3
+  become: true
+  become_user: deployer
+  tasks:
+  - name: create a file
+    file:
+      dest: /tmp/deployer-proof.txt
+      state: touch
+  tags: appfiles
