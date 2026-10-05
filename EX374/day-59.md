@@ -163,3 +163,7 @@ vm3 | CHANGED | rc=0 >>
 
 
 </details>
+
+###### Task 3 — capstone
+
+Write deploy.yml with two plays. Play 1 (tag users): create a user called deployer (needs become). Play 2 (tag appfiles): with become_user: deployer, create /tmp/deployer-proof.txt. Run --tags users first, then --tags appfiles, and prove the file is owned by deployer. Then run the whole playbook again with --skip-tags users — it must still succeed, because the user already exists. Tags + become + become_user + idempotency, all in one run.
