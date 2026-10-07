@@ -36,7 +36,30 @@ ansible.posix 2.2.2
 ansible.utils 6.1.1
 ```
 
+###### Task 1 — default + file lookup. 
 
+On AAP, create files/motd.txt with one line of text. Write banner.yml (localhost): set banner_text from the file lookup, and set admin_contact from a variable that may not exist — use the default filter to fall back to ops@cezeh.lab. Debug both. Self-check: run once normally, then again with -e admin_contact=me@lab.local — the second run must show your value, the first the fallback.
+
+<details>
+
+<summary> Click to see solution </summary>
+
+Created the file and commited it to the repository.
+
+```shell
+mkdir files
+
+echo "Hello World" >> files/motd.txt
+git add .
+git commit -m "added message of the day file"
+```
+
+Solution playbook is located [here](../playbooks/banner.yml). The playbook is also moved to the private repo. 
+
+Next step is to test it on the AAP. 
+
+
+</details>
 
 
 

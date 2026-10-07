@@ -1,0 +1,10 @@
+---
+- name: Drill on default value and file lookup.
+  hosts: localhost
+  vars:
+    banner_text: "{{ lookup('ansible.builtin.file', './files/motd.txt') }}"
+    #admin_contact: "me@lab.local"
+  tasks:
+  - name: shower banner_text content
+    debug:
+      msg: "{{ banner_text }} from: {{ admin_contact | default('ops@cezeh.lab') }}"
