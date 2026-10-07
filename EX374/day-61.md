@@ -35,3 +35,77 @@ Collection    Version
 ansible.posix 2.2.2
 ansible.utils 6.1.1
 ```
+
+
+
+
+
+
+
+
+#### Key ideas for working with plugins.
+
+- See [day 29](./day-29.md#common-ansible-plugin-types) notes for common plugin types. 
+
+- Inside of the plugin types (`filter` is a plugin type) are the plugins, and to get a list of plugins, use;
+`ansible-doc -t <plugin-type> -l`
+
+See example below:
+
+```shell
+[ansible@tower ansible-lab (main)]$ ansible-doc -t filter -l
+ansible.builtin.b64decode            Decode a base64 string
+ansible.builtin.b64encode            Encode a string as base64
+ansible.builtin.basename             get a path's base name
+ansible.builtin.bool                 cast into a boolean
+```
+- To see how to use a plugin, `ansible-doc -t filter <plugin-name>`
+
+<details>
+
+<summary>Click to see example</summary>
+
+```shell
+[ansible@tower ansible-lab (main)]$ ansible-doc -t filter bool
+> ANSIBLE.BUILTIN.BOOL    (/usr/lib/python3.9/site-packages/ansible/plugins/filter/bool.yml)
+
+        Attempt to cast the input into a boolean (`True' or `False') value.
+
+ADDED IN: historical
+
+OPTIONS (= is mandatory):
+
+= _input
+        Data to cast.
+        type: raw
+
+
+NAME: bool
+
+POSITIONAL: _input
+
+EXAMPLES:
+
+# simply encrypt my key in a vault
+vars:
+  isbool: "{{ (a == b)|bool }} "
+  otherbool: "{{ anothervar|bool }} "
+
+# in a task
+...
+when: some_string_value | bool
+
+```
+
+</details>
+
+- To get a code snippet of a plugin, `ansible-doc -t lookup -s file`
+  
+```shell
+[ansible@tower ansible-lab (main)]$ ansible-doc -t lookup -s file
+# _terms(string): path(s) of files to read
+# lstrip(bool): whether or not to remove whitespace from the beginning of the looked-up file
+# rstrip(bool): whether or not to remove whitespace from the ending of the looked-up file
+
+lookup('file', < _terms >, lstrip=False, rstrip=True)
+```
