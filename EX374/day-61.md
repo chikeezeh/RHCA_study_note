@@ -61,7 +61,9 @@ Next step is to test it on the AAP.
 
 </details>
 
+###### Task 2 — dict2items loop. 
 
+Write appfiles.yml for the web group: given a dict apps: {shop: 8080, blog: 8081, wiki: 8082}, loop it with dict2items to create /tmp/app-<name>.conf on each host, each file containing its port. Self-check: all three files exist on frontend-1 and frontend-2 with the right ports inside.
 
 
 
