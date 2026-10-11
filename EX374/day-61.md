@@ -102,6 +102,45 @@ frontend-2                 : ok=2    changed=0    unreachable=0    failed=0    s
 
 Write filtering.yml (localhost): given a services list of dicts with name, port, and enabled keys (mix true/false), derive the list of ports for enabled services only, using selectattr and map in one expression. Debug the result, then write it to /tmp/enabled-ports.txt with the copy module.
 
+<details>
+
+<summary> Click to see Solution </summary>
+
+See [filtering](../playbooks/filtering.yml) playbook for solution to the drill, see below for shell output when playbook is ran.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook filtering.yml 
+
+PLAY [drill on how to use selectattr and map] ******************************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [capture only the ports with enabled true] ****************************************************************************************************************************
+ok: [localhost]
+
+TASK [show the values of enabled_ports] ************************************************************************************************************************************
+ok: [localhost] => {
+    "enabled_ports": [
+        80,
+        8080,
+        6379,
+        22
+    ]
+}
+
+TASK [write the content of enabled_ports to a file.] ***********************************************************************************************************************
+ok: [localhost]
+
+PLAY RECAP *****************************************************************************************************************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+A key observation when running this playbook via AAP, since AAP runs in a containerized environment, the file `/tmp/enab..` wasn't actually written to the `localhost` running AAP. To make sure the file was written to the host, I added a `delegate_to` at the end of the copy task. 
+
+
+</details>
+
 
 
 

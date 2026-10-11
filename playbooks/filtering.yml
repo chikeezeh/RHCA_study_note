@@ -1,0 +1,23 @@
+---
+- name: drill on how to use selectattr and map
+  hosts: localhost
+  vars:
+    services:
+      - { name: web, port: 80, enabled: true }
+      - { name: api, port: 8080, enabled: true }
+      - { name: db, port: 5432, enabled: false }
+      - { name: cache, port: 6379, enabled: true }
+      - { name: metrics, port: 9090, enabled: false }
+      - { name: ssh, port: 22, enabled: true }
+  tasks:
+  - name: capture only the ports with enabled true
+    set_fact:
+      enabled_ports: "{{ services | selectattr('enabled') | map(attribute='port') | list }}"
+  - name: show the values of enabled_ports
+    debug:
+      var: enabled_ports
+  - name: write the content of enabled_ports to a file.
+    copy:
+      dest: /tmp/enabled-ports.txt
+      content: "{{ enabled_ports | join('\n') }}\n"
+    delegate_to: tower
