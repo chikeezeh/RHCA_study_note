@@ -66,6 +66,41 @@ Next step is to test it on the AAP.
 Write appfiles.yml for the web group: given a dict apps: {shop: 8080, blog: 8081, wiki: 8082}, loop it with dict2items to create /tmp/app-<name>.conf on each host, each file containing its port. Self-check: all three files exist on frontend-1 and frontend-2 with the right ports inside.
 
 
+<details>
+
+<summary> Click to see solution </summary>
+
+See [appfiles](../playbooks/appfiles.yml) for the solution playbook. See output of running the playbook below. 
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook appfiles.yml 
+
+PLAY [Playbook to demonstrate how to use dict2items] ***********************************************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************************
+ok: [frontend-2]
+ok: [frontend-1]
+
+TASK [Create config files for each app] ************************************************************************************************************************************
+ok: [frontend-2] => (item={'app': 'shop', 'port': 8080})
+ok: [frontend-1] => (item={'app': 'shop', 'port': 8080})
+ok: [frontend-2] => (item={'app': 'blog', 'port': 8081})
+ok: [frontend-1] => (item={'app': 'blog', 'port': 8081})
+ok: [frontend-2] => (item={'app': 'wiki', 'port': 8082})
+ok: [frontend-1] => (item={'app': 'wiki', 'port': 8082})
+
+PLAY RECAP *****************************************************************************************************************************************************************
+frontend-1                 : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+frontend-2                 : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[ansible@tower ansible-lab (main %)]
+```
+
+
+
+
+</details>
+
 
 
 #### Key ideas for working with plugins.

@@ -1,0 +1,14 @@
+---
+- name: Playbook to demonstrate how to use dict2items
+  hosts: web
+  vars:
+    apps:
+      shop: 8080
+      blog: 8081
+      wiki: 8082
+  tasks:
+  - name: Create config files for each app
+    copy:
+      dest: "/tmp/app-{{ item.app }}.conf"
+      content: "{{ item.port }}"
+    loop: "{{ apps| dict2items(key_name='app', value_name='port') }}"
