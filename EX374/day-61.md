@@ -96,10 +96,12 @@ frontend-2                 : ok=2    changed=0    unreachable=0    failed=0    s
 [ansible@tower ansible-lab (main %)]
 ```
 
-
-
-
 </details>
+
+###### Task 3 — selectattr + map. 
+
+Write filtering.yml (localhost): given a services list of dicts with name, port, and enabled keys (mix true/false), derive the list of ports for enabled services only, using selectattr and map in one expression. Debug the result, then write it to /tmp/enabled-ports.txt with the copy module.
+
 
 
 
