@@ -170,6 +170,12 @@ See playbook [vhost](../playbooks/vhost.yml) for the content of the playbook.
 
 </details>
 
+###### Task 5 — password + env lookups.
+1. Use the password lookup to generate a 20-character password (letters + digits) backed by /tmp/db-pass.txt.
+2. Use the env lookup to read an environment variable called DEPLOY_ENV — you'll set it yourself on the command line when you run the playbook (e.g. DEPLOY_ENV=staging ansible-playbook secret.yml).
+3. Debug both values so you can see them.
+4. Then write /tmp/app-config.txt containing the deploy environment and the password.
+
 #### Key ideas for working with plugins.
 
 - See [day 29](./day-29.md#common-ansible-plugin-types) notes for common plugin types. 
