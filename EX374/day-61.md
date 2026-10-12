@@ -144,7 +144,31 @@ A key observation when running this playbook via AAP, since AAP runs in a contai
 Task 4 — template module with validation. 
 Write templates/vhost.conf.j2 — a Jinja2 template for an Apache <VirtualHost> block driven by three variables: vhost_port, server_name, and doc_root. Write vhost.yml that renders it with the template module to /tmp/vhost.conf on both web hosts. Use the validate parameter so the rendered file gets syntax-checked before it's put in place (think httpd -t). 
 
+<details>
 
+<summary> Click to see solution </summary>
+
+See below the content of the template file:
+
+```jinja2
+<VirtualHost *:{{ vhost_port | default(8080) }}>
+    ServerName {{ server_name }}
+    DocumentRoot {{ doc_root }}
+
+    <Directory {{ doc_root }}>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+</VirtualHost>
+
+```
+See playbook [vhost](../playbooks/vhost.yml) for the content of the playbook.
+
+
+
+</details>
 
 #### Key ideas for working with plugins.
 

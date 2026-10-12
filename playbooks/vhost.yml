@@ -1,0 +1,20 @@
+---
+- name: drill on using template module.
+  hosts: web
+  vars:
+    vhost_port: 8080
+    server_name: shop.cezeh.lab
+    doc_root: /var/www/shop
+  tasks:
+  - name: make sure httpd is installed
+    dnf:
+      name: httpd
+      state: present
+    become: true
+  - name: create and validate the httpd config
+    template:
+      src: templates/vhost.conf.j2
+      dest: /tmp/vhost.conf
+      validate: "sh -c 'cp %s /etc/httpd/conf.d/ansible-validate.conf && /usr/sbin/httpd -t; rc=$?; rm -f /etc/httpd/conf.d/ansible-validate.conf; exit $rc'"
+      #validate: /usr/sbin/httpd -t -f  %s
+    become: true
