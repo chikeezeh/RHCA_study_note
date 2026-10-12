@@ -141,6 +141,9 @@ A key observation when running this playbook via AAP, since AAP runs in a contai
 
 </details>
 
+Task 4 — template module with validation. 
+Write vhosts.j2: loop a vhosts list (each with servername, docroot, and an optional port) to render Apache vhost blocks, using default(8080) where port is omitted. Deploy it with the template module to /etc/httpd/conf.d/vhosts.conf on frontend-1/frontend-2, using the module's validate option with httpd -t.
+
 
 
 
