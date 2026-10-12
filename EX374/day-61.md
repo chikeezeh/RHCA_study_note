@@ -142,8 +142,7 @@ A key observation when running this playbook via AAP, since AAP runs in a contai
 </details>
 
 Task 4 — template module with validation. 
-Write vhosts.j2: loop a vhosts list (each with servername, docroot, and an optional port) to render Apache vhost blocks, using default(8080) where port is omitted. Deploy it with the template module to /etc/httpd/conf.d/vhosts.conf on frontend-1/frontend-2, using the module's validate option with httpd -t.
-
+Write templates/vhost.conf.j2 — a Jinja2 template for an Apache <VirtualHost> block driven by three variables: vhost_port, server_name, and doc_root. Write vhost.yml that renders it with the template module to /tmp/vhost.conf on both web hosts. Use the validate parameter so the rendered file gets syntax-checked before it's put in place (think httpd -t). 
 
 
 
