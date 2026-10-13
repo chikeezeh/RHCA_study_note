@@ -176,6 +176,16 @@ See playbook [vhost](../playbooks/vhost.yml) for the content of the playbook.
 3. Debug both values so you can see them.
 4. Then write /tmp/app-config.txt containing the deploy environment and the password.
 
+<details>
+
+<Summary>Click to see soluion</summary>
+
+See [secret playbook](../playbooks/secret.yml) for solution. Used the command below to run the playbook to have the environment variable before the playbook run.
+
+`DEPLOY_ENV=staging ansible-playbook secret.yml`
+
+</details>
+
 #### Key ideas for working with plugins.
 
 - See [day 29](./day-29.md#common-ansible-plugin-types) notes for common plugin types. 
