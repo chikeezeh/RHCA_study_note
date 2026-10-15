@@ -178,11 +178,29 @@ See playbook [vhost](../playbooks/vhost.yml) for the content of the playbook.
 
 <details>
 
-<Summary>Click to see soluion</summary>
+<Summary>Click to see solution</summary>
 
 See [secret playbook](../playbooks/secret.yml) for solution. Used the command below to run the playbook to have the environment variable before the playbook run.
 
 `DEPLOY_ENV=staging ansible-playbook secret.yml`
+
+To make sure this playbook can execute idempotently on AAP, I made a new version tailored to that. Since AAP executes ansible in a containerized environment, my initial playbook the password file `/tmp/db-pass.txt` was recreated everytime the playbook ran, hence I was getting a new password. I had to use the `copy` module executed on the machine itself, and used `force` attribute so the file isn't recreated at every run, only when the file doesn't exist. See the [new playbook](../playbooks/secret2.yml) for more details. 
+
+For the environment variable. I injected a new credential type with the value I wanted, and made sure my template had access to the value. See screenshots below.
+
+![Credential Type](images/cred_type.jpg)
+
+---
+
+![Credential Template](images/cred.jpg)
+
+---
+
+![Using Credential Template](images/cred_temp.jpg)
+
+
+
+
 
 </details>
 
