@@ -200,6 +200,17 @@ For the environment variable. I injected a new credential type with the value I 
 
 
 
+###### Task 6 — capstone. 
+
+Write deploy.yml for the web group combining everything:
+
+1. Loop over the apps dict with dict2items, processing only apps where enabled is true — fold the selectattr into the loop expression.
+
+2. For each enabled app, render templates/app-vhost.conf.j2 with the template module to /tmp/{{ item.key }}.conf, using your validate wrapper from Task 4.
+
+3. The template must include: the app's port, a per-app secret from the password lookup backed by /tmp/{{ item.key }}-secret.txt, the DEPLOY_ENV environment variable, an admin contact via default('ops@cezeh.lab'), and a header comment pulled in with the file lookup (create a small header file for it).
+
+4. Prove it: show the playbook output — only enabled apps get files, blog must be skipped — and cat one rendered vhost.
 
 
 </details>
