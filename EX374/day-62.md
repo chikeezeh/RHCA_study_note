@@ -164,3 +164,68 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 
 `grep` exits 1 when the pattern isn't found — normally that fails the task. Write a play that greps for a string in /tmp/app.conf (create the file first), registers the result, and uses failed_when so the task only fails on a real error (rc ≥ 2), not on "no match". Debug whether the pattern was found. Prove: two runs — one where the pattern exists, one where it doesn't — neither failing, with correct "found / not found" reporting.
 
+
+<details>
+<summary>Click to see solution</summary>
+
+See the content of the playbook below.
+
+```yaml
+---
+- name: Use failed when to control failure
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: run a shell grep command
+    shell:
+      cmd: grep foundme /tmp/app.conf
+    register: grep_output
+    failed_when: grep_output.rc >= 2
+  - name: run when pattern is found
+    debug:
+      msg: "Pattern found"
+    when: grep_output.rc == 0
+  - name: run when pattern is not found
+    debug:
+      msg: "Pattern not found"
+    when: grep_output.rc != 0
+
+```
+
+See output of the playbook below.
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook failedwhen.yml
+
+PLAY [Use failed when to control failure] ********************************************
+
+TASK [run a shell grep command] ******************************************************
+changed: [localhost]
+
+TASK [run when pattern is found] *****************************************************
+ok: [localhost] => {
+    "msg": "Pattern found"
+}
+
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped                      =0    rescued=0    ignored=0
+
+
+[ansible@tower ansible-lab (main %)]$ ansible-playbook failedwhen.yml
+
+PLAY [Use failed when to control failure] ********************************************
+
+TASK [run a shell grep command] ******************************************************
+changed: [localhost]
+
+TASK [run when pattern is found] *****************************************************
+skipping: [localhost]
+
+TASK [run when pattern is not found] *************************************************
+ok: [localhost] => {
+    "msg": "Pattern not found"
+}
+
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped                      =1    rescued=0    ignored=0
+```
+</details>
