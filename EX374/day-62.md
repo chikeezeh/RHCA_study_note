@@ -96,3 +96,7 @@ frontend-2                 : ok=1    changed=0    unreachable=0    failed=0    s
 
 
 </details>
+
+Task 3 — block / rescue / always. 
+
+Write a play with a block that attempts something guaranteed to fail (e.g., copying a nonexistent file, or installing a package named definitely-not-real). The rescue section must write /tmp/rescue-fired.txt with a one-line explanation; the always section must append a completion line to /tmp/block-log.txt. Prove: output shows the rescue task executing, both files exist with the expected content, and the play does not report failure.
