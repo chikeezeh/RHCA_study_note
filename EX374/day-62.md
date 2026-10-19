@@ -97,6 +97,64 @@ frontend-2                 : ok=1    changed=0    unreachable=0    failed=0    s
 
 </details>
 
-Task 3 — block / rescue / always. 
+###### Task 3 — block / rescue / always. 
 
 Write a play with a block that attempts something guaranteed to fail (e.g., copying a nonexistent file, or installing a package named definitely-not-real). The rescue section must write /tmp/rescue-fired.txt with a one-line explanation; the always section must append a completion line to /tmp/block-log.txt. Prove: output shows the rescue task executing, both files exist with the expected content, and the play does not report failure.
+
+<details>
+<summary>Click to see solution</summary>
+
+See playbook below for solution to this task:
+
+```yaml
+---
+- name: drill that uses block, rescue, always
+  hosts: localhost
+  gather_facts: false
+  become: true
+  vars:
+    app: definitely-not-real
+  tasks:
+  - name: main block
+    block:
+    - name: this task is going to fail
+      dnf:
+        name: "{{ app }}"
+        state: present
+    rescue:
+    - name: write a rescue text
+      copy:
+        dest: /tmp/rescure-fired.txt
+        content: "Can't install application {{ app }}, because it doesn't exist"
+        force: false
+    always:
+    - name: Write completion task
+      copy:
+        dest: /tmp/block-log.txt
+        content: "Block 1 completed"
+        force: false
+
+```
+
+Output:
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook blockrescue.yml
+
+PLAY [drill that uses block, rescue, always] *****************************************
+
+TASK [this task is going to fail] ****************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "failures": ["No package definitely-                      not-real available."], "msg": "Failed to install some of the specified packages", "rc"                      : 1, "results": []}
+
+TASK [write a rescue text] ***********************************************************
+ok: [localhost]
+
+TASK [Write completion task] *********************************************************
+ok: [localhost]
+
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped                      =0    rescued=1    ignored=0
+
+```
+
+</details>
