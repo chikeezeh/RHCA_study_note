@@ -198,7 +198,7 @@ For the environment variable. I injected a new credential type with the value I 
 
 ![Using Credential Template](images/cred_temp.jpg)
 
-
+</details>
 
 ###### Task 6 — capstone. 
 
@@ -212,8 +212,57 @@ Write deploy.yml for the web group combining everything:
 
 4. Prove it: show the playbook output — only enabled apps get files, blog must be skipped — and cat one rendered vhost.
 
+<details>
+
+<Summary>Click to see solution</summary>
+
+First step is to create the `apps` variable. I will use the `group_vars` directory for this. 
+
+```shell
+[ansible@tower web (main)]$ pwd
+/home/ansible/dev/ansible-lab/group_vars/web
+[ansible@tower web (main)]$ vim services.yml
+
+[ansible@tower web (main %)]$ cat services.yml
+apps:
+  shop:
+    port: 8080
+    enabled: true
+  blog:
+    port: 8081
+    enabled: false
+  wiki:
+    port: 8082
+    enabled: true
+
+
+```
+Second step is to create the template file, see the content below.
+
+```jinja
+<VirtualHost *:{{ item.config.port | default(8080) }}>
+    ServerName {{ item.app_name }}.cezeh.lab
+    ServerAdmin {{ admin_contact | default('ops@cezeh.lab') }}
+
+    # Deployment Environment: {{ lookup('ansible.builtin.env', 'DEPLOY_ENV') | default('development', true) }}
+    # App Secret: {{ lookup('ansible.builtin.password', '/tmp/' ~ item.app_name ~ '-secret.txt', length=20, chars=['ascii_letters', 'digits']) }}
+    DocumentRoot /var/www/{{ item.app_name }}
+
+    <Directory {{ item.app_name }}>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+</VirtualHost>
+
+```
+
+Finally see the [deployment playbook](../playbooks/deploy2.yml) for playbook implementation. 
 
 </details>
+
+---
 
 #### Key ideas for working with plugins.
 

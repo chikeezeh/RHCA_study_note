@@ -1,0 +1,17 @@
+---
+- name: Create variable host configuration files for different apps
+  hosts: web
+  gather_facts: false
+  tasks:
+  - name: make sure httpd is installed
+    dnf:
+      name: httpd
+      state: present
+    become: true
+  - name: test template
+    template:
+      src: templates/app-vhost.conf.j2
+      dest: "/tmp/{{ item.app_name }}.conf"
+      validate: "sh -c 'cp %s /etc/httpd/conf.d/ansible-validate.conf && /usr/sbin/httpd -t; rc=$?; rm -f /etc/httpd/conf.d/ansible-validate.conf; exit $rc'"
+    loop: "{{ apps| dict2items(key_name='app_name', value_name='config') | selectattr('config.enabled') |list }}"
+    become: true
