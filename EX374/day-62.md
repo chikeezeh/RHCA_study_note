@@ -55,3 +55,44 @@ frontend-2                 : ok=2    changed=1    unreachable=0    failed=0    s
 ###### Task 2 — run_once + local_action. 
 
 In a play targeting web, add a task using local_action (or delegate_to: localhost + run_once) that writes the current date/time to /tmp/deploy-stamp.txt. It must execute exactly once despite multiple target hosts. Prove: the playbook output shows it ran a single time, and the file contains one timestamp.
+
+<details>
+<summary>Click to see solution </summary>
+
+See the playbook content below:
+
+```yaml
+---
+- name: run once the current date/time to a file
+  hosts: web
+  tasks:
+  - name: get the current date/time
+    copy:
+      dest: /tmp/deploy-stamp.txt
+      content: "{{ ansible_date_time.iso8601 }}"
+    delegate_to: localhost
+    run_once: true
+
+```
+See playbook output below:
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook run_once.yml
+
+PLAY [run once the current date/time to a file] **************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************************************************************************************
+ok: [frontend-1]
+ok: [frontend-2]
+
+TASK [get the current date/time] *****************************************************************************************************************************************************************************
+changed: [frontend-1 -> localhost]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+frontend-1                 : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+frontend-2                 : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
+
+</details>
