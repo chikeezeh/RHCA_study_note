@@ -158,3 +158,9 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 ```
 
 </details>
+
+
+###### Task 4 — failed_when. 
+
+`grep` exits 1 when the pattern isn't found — normally that fails the task. Write a play that greps for a string in /tmp/app.conf (create the file first), registers the result, and uses failed_when so the task only fails on a real error (rc ≥ 2), not on "no match". Debug whether the pattern was found. Prove: two runs — one where the pattern exists, one where it doesn't — neither failing, with correct "found / not found" reporting.
+
