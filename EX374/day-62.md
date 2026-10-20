@@ -233,3 +233,116 @@ localhost                  : ok=2    changed=1    unreachable=0    failed=0    s
 ###### Task 5 — changed_when. 
 
 Write a play with two command/shell tasks: one that only reads system state (e.g., uptime) and must never report changed; one that appends a marker line to /tmp/marker.log only if it's absent, and must report changed exactly when it actually wrote. Prove: first run shows one changed task, rerun shows changed=0.
+
+<details>
+<summary>Click to see solution</summary>
+
+See Playbook below:
+
+```yaml
+---
+- name: Drill on how to use changed_when
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: get uptime using command module
+    ansible.builtin.command:
+      cmd: uptime
+    register: cmdoutput
+    changed_when: false
+  - name: create an empty file
+    ansible.builtin.copy:
+      dest: /tmp/marker.log
+      content: ""
+      force: false
+  - name: create a marker in the file
+    ansible.builtin.shell:
+      cmd: |
+        if ! grep -qF 'DEPLOYED' /tmp/marker.log; then
+          echo 'DEPLOYED' > /tmp/marker.log
+          echo "CHANGED"
+        fi
+    register: shelloutput
+    changed_when: "'CHANGED' in shelloutput.stdout"
+  - name: show shelloutput output
+    debug:
+      var: shelloutput
+```
+
+See shell output when the playbook is ran, notice that on the second run, the shell module doesn't show changed since it didn't write to the file.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook changedwhen.yml
+
+PLAY [Drill on how to use changed_when] **********************************************
+
+TASK [get uptime using command module] ***********************************************
+ok: [localhost]
+
+TASK [create an empty file] **********************************************************
+changed: [localhost]
+
+TASK [create a marker in the file] ***************************************************
+changed: [localhost]
+
+TASK [show shelloutput output] *******************************************************
+ok: [localhost] => {
+    "shelloutput": {
+        "changed": true,
+        "cmd": "if ! grep -qF 'DEPLOYED' /tmp/marker.log; then\n  echo 'DEPLOYED' > /tmp/marker.log\n  echo \"CHANGED\"\nfi\n",
+        "delta": "0:00:00.003683",
+        "end": "2026-10-20 08:22:09.682294",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-10-20 08:22:09.678611",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "CHANGED",
+        "stdout_lines": [
+            "CHANGED"
+        ]
+    }
+}
+
+PLAY RECAP ***************************************************************************
+localhost                  : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ansible@tower ansible-lab (main %)]$ ansible-playbook changedwhen.yml
+
+PLAY [Drill on how to use changed_when] **********************************************
+
+TASK [get uptime using command module] ***********************************************
+ok: [localhost]
+
+TASK [create an empty file] **********************************************************
+ok: [localhost]
+
+TASK [create a marker in the file] ***************************************************
+ok: [localhost]
+
+TASK [show shelloutput output] *******************************************************
+ok: [localhost] => {
+    "shelloutput": {
+        "changed": false,
+        "cmd": "if ! grep -qF 'DEPLOYED' /tmp/marker.log; then\n  echo 'DEPLOYED' > /tmp/marker.log\n  echo \"CHANGED\"\nfi\n",
+        "delta": "0:00:00.003862",
+        "end": "2026-10-20 08:22:12.807596",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2026-10-20 08:22:12.803734",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "",
+        "stdout_lines": []
+    }
+}
+
+PLAY RECAP ***************************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
+
+</details>
