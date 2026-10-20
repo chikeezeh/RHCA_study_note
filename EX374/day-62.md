@@ -346,3 +346,7 @@ localhost                  : ok=4    changed=0    unreachable=0    failed=0    s
 
 
 </details>
+
+###### Task 6 — capstone. Combine it all: 
+ 
+ Config deploy to web where (a) a pre-flight check runs exactly once via delegation to localhost, (b) the deploy itself is wrapped in a block — template render plus your Apache validate wrapper — with a rescue that restores service state or flags the failure and an always that verifies httpd is running, (c) failed_when/changed_when used where a raw command needs them. Prove: playbook output, and demonstrate the rescue path firing at least once (e.g., by temporarily breaking the template source).
