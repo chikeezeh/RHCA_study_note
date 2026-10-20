@@ -229,3 +229,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped                      =1    rescued=0    ignored=0
 ```
 </details>
+
+###### Task 5 — changed_when. 
+
+Write a play with two command/shell tasks: one that only reads system state (e.g., uptime) and must never report changed; one that appends a marker line to /tmp/marker.log only if it's absent, and must report changed exactly when it actually wrote. Prove: first run shows one changed task, rerun shows changed=0.
