@@ -350,3 +350,90 @@ localhost                  : ok=4    changed=0    unreachable=0    failed=0    s
 ###### Task 6 — capstone. Combine it all: 
  
  Config deploy to web where (a) a pre-flight check runs exactly once via delegation to localhost, (b) the deploy itself is wrapped in a block — template render plus your Apache validate wrapper — with a rescue that restores service state or flags the failure and an always that verifies httpd is running, (c) failed_when/changed_when used where a raw command needs them. Prove: playbook output, and demonstrate the rescue path firing at least once (e.g., by temporarily breaking the template source).
+
+<details>
+<summary> Click to see solution </summary>
+
+I re-used some of the concepts from previous drills, see [playbook](../playbooks/deploy_web.yml) for solution.
+
+Output when there is a syntax error in the template.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook deploy_web.yml
+
+PLAY [Create variable host configuration files for different apps] *******************************************************************************************************************************************
+
+TASK [pre-flight check for template file] ********************************************************************************************************************************************************************
+ok: [frontend-1 -> localhost]
+
+TASK [make sure httpd is installed] **************************************************************************************************************************************************************************
+ok: [frontend-1]
+ok: [frontend-2]
+
+TASK [Deploy configuration files to managed hosts] ***********************************************************************************************************************************************************
+failed: [frontend-2] (item={'app_name': 'shop', 'config': {'port': 8080, 'enabled': True}}) => {"ansible_loop_var": "item", "changed": false, "checksum": "10c5ba2a75c8ad7a164ba916795e685eb454a302", "exit_status": 1, "item": {"app_name": "shop", "config": {"enabled": true, "port": 8080}}, "msg": "failed to validate", "stderr": "AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:\nInvalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration\n", "stderr_lines": ["AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:", "Invalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration"], "stdout": "", "stdout_lines": []}
+failed: [frontend-1] (item={'app_name': 'shop', 'config': {'port': 8080, 'enabled': True}}) => {"ansible_loop_var": "item", "changed": false, "checksum": "10c5ba2a75c8ad7a164ba916795e685eb454a302", "exit_status": 1, "item": {"app_name": "shop", "config": {"enabled": true, "port": 8080}}, "msg": "failed to validate", "stderr": "AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:\nInvalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration\n", "stderr_lines": ["AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:", "Invalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration"], "stdout": "", "stdout_lines": []}
+failed: [frontend-1] (item={'app_name': 'wiki', 'config': {'port': 8082, 'enabled': True}}) => {"ansible_loop_var": "item", "changed": false, "checksum": "ed9a291d47d61071f04f0c17c6f6d4ed4540bf52", "exit_status": 1, "item": {"app_name": "wiki", "config": {"enabled": true, "port": 8082}}, "msg": "failed to validate", "stderr": "AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:\nInvalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration\n", "stderr_lines": ["AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:", "Invalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration"], "stdout": "", "stdout_lines": []}
+failed: [frontend-2] (item={'app_name': 'wiki', 'config': {'port': 8082, 'enabled': True}}) => {"ansible_loop_var": "item", "changed": false, "checksum": "ed9a291d47d61071f04f0c17c6f6d4ed4540bf52", "exit_status": 1, "item": {"app_name": "wiki", "config": {"enabled": true, "port": 8082}}, "msg": "failed to validate", "stderr": "AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:\nInvalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration\n", "stderr_lines": ["AH00526: Syntax error on line 5 of /etc/httpd/conf.d/ansible-validate.conf:", "Invalid command 'BadDirective', perhaps misspelled or defined by a module not included in the server configuration"], "stdout": "", "stdout_lines": []}
+
+TASK [Notify the user that the deployment failed] ************************************************************************************************************************************************************
+ok: [frontend-1] => {
+    "msg": "Deployment failed"
+}
+ok: [frontend-2] => {
+    "msg": "Deployment failed"
+}
+
+TASK [Make sure rollback is done] ****************************************************************************************************************************************************************************
+changed: [frontend-1]
+changed: [frontend-2]
+
+TASK [Log the actual failure] ********************************************************************************************************************************************************************************
+fatal: [frontend-1]: FAILED! => {"changed": false, "msg": "Configuration failed syntax check"}
+fatal: [frontend-2]: FAILED! => {"changed": false, "msg": "Configuration failed syntax check"}
+
+TASK [Always verify apache is still running] *****************************************************************************************************************************************************************
+ok: [frontend-1]
+ok: [frontend-2]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+frontend-1                 : ok=5    changed=1    unreachable=0    failed=1    skipped=0    rescued=1    ignored=0
+frontend-2                 : ok=4    changed=1    unreachable=0    failed=1    skipped=0    rescued=1    ignored=0
+
+```
+
+Output when there is no syntax error in the template.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ ansible-playbook deploy_web.yml
+
+PLAY [Create variable host configuration files for different apps] *******************************************************************************************************************************************
+
+TASK [pre-flight check for template file] ********************************************************************************************************************************************************************
+ok: [frontend-1 -> localhost]
+
+TASK [make sure httpd is installed] **************************************************************************************************************************************************************************
+ok: [frontend-1]
+ok: [frontend-2]
+
+TASK [Deploy configuration files to managed hosts] ***********************************************************************************************************************************************************
+ok: [frontend-1] => (item={'app_name': 'shop', 'config': {'port': 8080, 'enabled': True}})
+ok: [frontend-2] => (item={'app_name': 'shop', 'config': {'port': 8080, 'enabled': True}})
+ok: [frontend-1] => (item={'app_name': 'wiki', 'config': {'port': 8082, 'enabled': True}})
+ok: [frontend-2] => (item={'app_name': 'wiki', 'config': {'port': 8082, 'enabled': True}})
+
+TASK [Run Apache configuration file test] ********************************************************************************************************************************************************************
+ok: [frontend-2]
+ok: [frontend-1]
+
+TASK [Always verify apache is still running] *****************************************************************************************************************************************************************
+ok: [frontend-2]
+ok: [frontend-1]
+
+PLAY RECAP ***************************************************************************************************************************************************************************************************
+frontend-1                 : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+frontend-2                 : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
+</details>
