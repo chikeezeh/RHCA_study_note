@@ -1,0 +1,14 @@
+---
+- name: verify what collections ansible sees when running
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: use command module to run ansible commands.
+    ansible.builtin.shell:
+      cmd: ansible-galaxy collection list
+    register: commandoutput
+    changed_when: false
+
+  - name: show output of above task
+    ansible.builtin.debug:
+      var: commandoutput.stdout_lines

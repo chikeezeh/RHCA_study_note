@@ -123,3 +123,51 @@ This one is pretty straightforward, see [deploy_web_mod](../playbooks/deploy_web
 ###### Task 5 — prove what the job actually sees. 
 
 Add a diagnostic task (or small playbook) run through the controller that lists the collections visible inside the job's environment (ansible-galaxy collection list output captured and debugged). Prove: the job output shows both collections from your requirements.yml, at the versions you pinned — not just the ones baked into the default EE.
+
+<details>
+<summary> Click to see solution </summary>
+
+See [verifycollections](../playbooks/verifycollections.yml) playbook for my implementation of the solution.
+
+See the output from AAP below. This shows that the collections in the `requirements.yml` file are stored under `/runner/requirements_collections/ansible_collections`, while the collections in the execution environment are under `/usr/share/ansible/collections/ansible_collections`.
+
+```shell
+
+13
+ok: [localhost] => {
+14
+    "commandoutput.stdout_lines": [
+15
+        "",
+16
+        "# /runner/requirements_collections/ansible_collections",
+17
+        "Collection                      Version     ",
+18
+        "------------------------------- ------------",
+19
+        "community.crypto                2.26.9      ",
+20
+        "community.general               9.5.13      ",
+21
+        "",
+22
+        "# /usr/share/ansible/collections/ansible_collections",
+23
+        "Collection                      Version     ",
+24
+        "------------------------------- ------------",
+25
+        "amazon.aws                      9.2.0       ",
+26
+        "ansible.controller              4.6.30      ",
+27
+        "ansible.eda                     2.10.0      ",
+28
+        "ansible.hub                     1.0.0       ",
+29
+        "ansible.netcommon               7.1.0       …
+
+```
+
+</details>
