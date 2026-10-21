@@ -113,3 +113,8 @@ See the test playbook below:
 ```
 
 </details>
+
+###### Task 4 — FQCN refactor. 
+
+Take a working playbook from an earlier drill (e.g., deploy_web.yml) and convert every module reference to FQCN — builtins included. Run the original and the refactor, prove identical behavior: same recap shape, same resulting files.
+
