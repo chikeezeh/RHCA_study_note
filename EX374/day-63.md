@@ -118,3 +118,5 @@ See the test playbook below:
 
 Take a working playbook from an earlier drill (e.g., deploy_web.yml) and convert every module reference to FQCN — builtins included. Run the original and the refactor, prove identical behavior: same recap shape, same resulting files.
 
+This one is pretty straightforward, see [deploy_web_mod](../playbooks/deploy_web_mod.yml) for solution playbook.
+

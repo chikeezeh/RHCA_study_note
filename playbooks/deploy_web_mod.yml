@@ -1,0 +1,62 @@
+---
+- name: Create variable host configuration files for different apps
+  hosts: web
+  gather_facts: false
+  tasks:
+  - name: pre-flight check for template file
+    ansible.builtin.stat:
+      path: templates/deploy-vhost.conf.j2
+    delegate_to: localhost
+    run_once: true
+    register: template_check
+    failed_when: not template_check.stat.exists
+
+  - name: Deploy block
+    block:
+    - name: make sure httpd is installed
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+      become: true
+
+    - name: Deploy configuration files to managed hosts
+      ansible.builtin.template:
+        src: templates/deploy-vhost.conf.j2
+        dest: "/tmp/{{ item.app_name }}.conf"
+        validate: "sh -c 'cp %s /etc/httpd/conf.d/ansible-validate.conf && /usr/sbin/httpd -t; rc=$?; rm -f /etc/httpd/conf.d/ansible-validate.conf; exit $rc'"
+      loop: "{{ apps| dict2items(key_name='app_name', value_name='config') | selectattr('config.enabled') |list }}"
+      become: true
+      notify: Reload Apache
+
+    - name: Run Apache configuration file test
+      ansible.builtin.command:
+        cmd: apachectl configtest
+      register: commandoutput
+      changed_when: false
+      failed_when: "'Syntax OK' not in commandoutput.stderr and 'Syntax OK' not in commandoutput.stdout"
+
+    rescue:
+    - name: Notify the user that the deployment failed
+      ansible.builtin.debug:
+        msg: "Deployment failed"
+
+    - name: Make sure rollback is done
+      ansible.builtin.command:
+        cmd: echo "Reverted Configuration"
+      changed_when: true
+
+    - name: Log the actual failure
+      ansible.builtin.fail:
+        msg: "Configuration failed syntax check"
+
+    always:
+    - name: Always verify apache is still running
+      ansible.builtin.service:
+        name: httpd
+        state: started
+
+  handlers:
+  - name: Reload Apache
+    ansible.builtin.service:
+      name: httpd
+      state: reloaded
