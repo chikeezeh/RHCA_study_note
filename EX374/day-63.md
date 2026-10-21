@@ -74,3 +74,42 @@ Used the `community.crypto:2.22.3` collection to solve this. See the sample play
 
 ###### Task 3 — two collections, version constraints. 
 Extend requirements.yml so both collections carry version constraints (an exact pin for one, a range for the other). One playbook, one job: use a module from each collection in the same play. 
+
+<details>
+<summary> Click to see solution </summary>
+
+See edit made to the requirements file below:
+
+```shell
+[ansible@tower ansible-lab (main)]$ cat collections/requirements.yml
+---
+collections:
+  - name: community.general
+    version: "9.5.13"
+  - name: community.crypto
+    version: ">=2.16.0,<3.0.0"
+
+```
+
+See the test playbook below:
+
+```yaml
+---
+- name: test the community.general collection by using one of its modules
+  hosts: web
+  tasks:
+  - name: Add "typeofmellons=pumpkin" is in section "[mellons]" in specified file
+    community.general.ini_file:
+      path: /tmp/fruits
+      section: mellons
+      option: typeofmellons
+      value: pumpkin
+      mode: '0600'
+      state: present
+      exclusive: false
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: /tmp/take2_id_ssh_rsa
+```
+
+</details>
