@@ -171,3 +171,8 @@ ok: [localhost] => {
 ```
 
 </details>
+
+
+###### Task 6 — capstone. 
+
+A new job template running a playbook from the repo that uses: requirements.yml with ≥2 collections, ≥3 collection modules by FQCN (builtins don't count), FQCN for every module call, and targets two different host groups.
