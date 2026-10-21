@@ -71,3 +71,6 @@ Used the `community.crypto:2.22.3` collection to solve this. See the sample play
 ```
 
 </details>
+
+###### Task 3 — two collections, version constraints. 
+Extend requirements.yml so both collections carry version constraints (an exact pin for one, a range for the other). One playbook, one job: use a module from each collection in the same play. 
