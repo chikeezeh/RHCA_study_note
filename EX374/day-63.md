@@ -53,3 +53,21 @@ Created a simple playbook the utilized an example from the `community.general.in
 ###### Task 2 — find the FQCN offline. 
 
 Goal: generate an OpenSSH keypair on vm3. Using only ansible-doc on the control node (no web), find which collection and module does this. Add that collection to requirements.yml, write the playbook using the FQCN, run via controller. Prove: the ansible-doc output you used, job output, and the key files on vm3.
+
+<details>
+<summary> Click to see solution </summary>
+
+Used the `community.crypto:2.22.3` collection to solve this. See the sample playbook below:
+
+```yaml
+---
+- name: configure dummy ssh on vm3
+  hosts: vm3
+  tasks:
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: /tmp/id_ssh_rsa
+
+```
+
+</details>
