@@ -120,3 +120,6 @@ Take a working playbook from an earlier drill (e.g., deploy_web.yml) and convert
 
 This one is pretty straightforward, see [deploy_web_mod](../playbooks/deploy_web_mod.yml) for solution playbook.
 
+###### Task 5 — prove what the job actually sees. 
+
+Add a diagnostic task (or small playbook) run through the controller that lists the collections visible inside the job's environment (ansible-galaxy collection list output captured and debugged). Prove: the job output shows both collections from your requirements.yml, at the versions you pinned — not just the ones baked into the default EE.
