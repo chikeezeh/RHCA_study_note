@@ -84,3 +84,30 @@ Finally, called the role in a playbook.
 Task 2 — Role parameters beat defaults.
 
 One playbook, two plays: play 1 applies common to frontend-1 with `common_env_name `passed as a role parameter set to `alpha`; play 2 applies it to frontend-2 with the parameter set to `beta`. Do not edit the role's defaults, and do not use host_vars/group_vars for this.Prove: playbook file plus cat of the marker file on both hosts — alpha on frontend-1, beta on frontend-2.
+
+<details>
+<summary> Click to see solution </summary>
+
+Created a simple playbook shown below to answer the question.
+
+```yaml
+---
+- name: use common role on frontend-1
+  hosts: frontend-1
+  gather_facts: false
+  roles:
+    - role: common
+      vars:
+        common_env_name: alpha
+
+- name: use common role on frontend-2
+  hosts: frontend-2
+  gather_facts: false
+  roles:
+    - role: common
+      vars:
+        common_env_name: beta
+
+```
+
+</details>
