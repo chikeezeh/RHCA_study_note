@@ -1,0 +1,26 @@
+---
+- name: capstone using 2 collections
+  hosts: all
+  tasks:
+  - name: Add "typeofmellons=pumpkin" is in section "[mellons]" in specified file
+    community.general.ini_file:
+      path: /tmp/fruits
+      section: mellons
+      option: typeofmellons
+      value: pumpkin
+      mode: '0600'
+      state: present
+      exclusive: false
+    when: inventory_hostname == 'frontend-1'
+
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    community.crypto.openssh_keypair:
+      path: /tmp/take2_id_ssh_rsa
+    when: inventory_hostname == 'frontend-2'
+
+  - name: Create a file of 1m filled with null bytes
+    community.general.filesize:
+      path: /var/bigfile
+      size: 1m
+    when: inventory_hostname == 'vm3'
+    become: true

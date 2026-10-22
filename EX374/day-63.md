@@ -177,3 +177,9 @@ ok: [localhost] => {
 
 A new job template running a playbook from the repo that uses: requirements.yml with ≥2 collections, ≥3 collection modules by FQCN (builtins don't count), FQCN for every module call, and targets two different host groups.
 
+<details>
+<summary> Click to see solution </summary>
+
+See the solution to the capstone in the [attached playbook](../playbooks/collectioncapstone.yml). I re-used previous plays and added a 3rd task to create a null file. 
+
+</details>
