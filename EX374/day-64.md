@@ -111,3 +111,8 @@ Created a simple playbook shown below to answer the question.
 ```
 
 </details>
+
+
+###### Task 3 — A custom filter plugin, used inside a role
+
+Create filter_plugins/lab_filters.py at the project root defining one filter, quoted_csv, that takes a list of strings and returns them double-quoted and comma-separated (e.g. ["a","b"] → "a", "b").Create a second role, webapp (galaxy init). Its defaults define a list variable webapp_clients with at least three entries. Its template deploys /tmp/webapp.conf to the web group, containing one line that renders the list through your quoted_csv filter.Prove: the rendered line in /tmp/webapp.conf on frontend-1, in exactly the quoted format.
