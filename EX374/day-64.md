@@ -81,3 +81,6 @@ Finally, called the role in a playbook.
 
 </details>
 
+Task 2 — Role parameters beat defaults.
+
+One playbook, two plays: play 1 applies common to frontend-1 with `common_env_name `passed as a role parameter set to `alpha`; play 2 applies it to frontend-2 with the parameter set to `beta`. Do not edit the role's defaults, and do not use host_vars/group_vars for this.Prove: playbook file plus cat of the marker file on both hosts — alpha on frontend-1, beta on frontend-2.
