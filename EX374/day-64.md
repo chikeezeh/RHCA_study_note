@@ -206,3 +206,6 @@ Finally, created a playbook that utilized the role.
 
 </details>
 
+###### Task 4 — Role dependency + a delegated ledger
+
+Give webapp a meta/main.yml declaring a dependency on common. Prove it: a playbook that applies only webapp to frontend-1, whose output shows common's tasks executing first.Add a task to webapp that runs once for the whole play (delegated to the control node) and writes /tmp/role-ledger.txt on tower: one line per host in the play, each line containing that host's name and its webapp port (define a webapp_port default in the role; pull each host's value via hostvars). Regenerate the whole file each run — appending is not acceptable.Prove: apply webapp to the full web group; cat the ledger on tower (both hosts, one line each); rerun and show the file is unchanged.
