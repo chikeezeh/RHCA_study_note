@@ -116,3 +116,93 @@ Created a simple playbook shown below to answer the question.
 ###### Task 3 — A custom filter plugin, used inside a role
 
 Create filter_plugins/lab_filters.py at the project root defining one filter, quoted_csv, that takes a list of strings and returns them double-quoted and comma-separated (e.g. ["a","b"] → "a", "b").Create a second role, webapp (galaxy init). Its defaults define a list variable webapp_clients with at least three entries. Its template deploys /tmp/webapp.conf to the web group, containing one line that renders the list through your quoted_csv filter.Prove: the rendered line in /tmp/webapp.conf on frontend-1, in exactly the quoted format.
+
+<details>
+<summary> Click to see solution </summary>
+
+For this task, I created a python script under `filter_plugins` directory, see the script below, note the script contains other methods that are not relevant to the task, but were used for testing purposes.
+
+```python
+class FilterModule(object):
+    def filters(self):
+        return {
+            'custom_prefix': self.custom_prefix,
+            'multiply_by': self.multiply_by,
+            'phone_format': self.phone_format,
+            'quoted_csv': self.quoted_csv,
+        }
+
+    def custom_prefix(self, value, prefix="ITEM_"):
+        """Adds a prefix to a string."""
+        return f"{prefix}{value}"
+
+    def multiply_by(self, value, factor=2):
+        """Multiplies an integer or float by a given factor."""
+        return value * factor
+    def phone_format(self, number):
+        return f"({number[:3]}) {number[3:6]}-{number[6:]}"
+
+    def quoted_csv(self,value_list):
+        """Returns a double quoted and comma-seperated list of strings"""
+        return ", ".join(f'"{value}"' for value in value_list)
+
+```
+
+Then I created the webapp role using ansible-galaxy.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ tree roles/webapp/
+roles/webapp/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+│   └── task3.j2
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+```
+
+Then created a default variable as shown below.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ cat roles/webapp/defaults/main.yml
+---
+# defaults file for webapp
+webapp_clients:
+ - server01
+ - server02
+ - server03
+```
+
+Created a template file that calls the variable above and used the custom filter created in the python script:
+
+```shell
+[ansible@tower ansible-lab (main %)]$ cat roles/webapp/templates/task3.j2
+{{ webapp_clients | quoted_csv }}
+```
+
+Finally, created a playbook that utilized the role.
+
+```yaml
+---
+- name: test a custom filter.
+  hosts: web
+  gather_facts: false
+  roles:
+    - role: webapp
+
+```
+
+</details>
+
