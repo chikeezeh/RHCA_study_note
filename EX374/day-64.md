@@ -257,3 +257,8 @@ Finally, created a playbook to utilize the changes above.
 
 
 </details>
+
+
+###### Task 5 — Collections inside the role, proven through AAP
+
+Extend webapp with two more tasks, both by FQCN: community.general.ini_file writing a setting of your choice to /tmp/webapp.ini, and community.crypto.openssh_keypair generating /tmp/webapp_key.Both collections must resolve from the project's existing collections/requirements.yml — no local installs as a substitute.Prove: run through an automation controller job (not CLI), job output, and both artifacts on frontend-1.
