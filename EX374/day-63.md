@@ -292,3 +292,43 @@ I uploaded the tar file from Task 2 into my AAP. See screentshot below. Note cre
 ###### Task 4 — Consume the published collection end-to-end, then bump the version.
 
 In a controller project, point collections/requirements.yml at the published collection (from the hub or Galaxy, not the local tarball) and run a job template using the collection's role.Prove: job output plus the role's artifacts on a host.Then bump the collection to 1.1.0, rebuild, republish, and prove a fresh job picks up the new version.
+
+<details>
+<summary> Click to see solution </summary>
+
+Below is the content of the requirements.yml file.
+
+```yaml
+
+---
+collections:
+  - name: community.general
+    version: "9.5.13"
+  - name: community.crypto
+    version: "2.22.3"
+    #version: ">=2.16.0,<3.0.0"
+  - name: chikeezeh.webtools
+    version: "1.0.0"
+
+
+```
+
+For AAP to use the automation hub to find my custom collection, we have to give it credentials to use. 
+
+Start by creating an API key, see image below.
+
+![API token](images/api-token.jpg)
+
+Then under Automation controller, create a new Credential of type `Ansible Galaxy/Automation Hub API Token`, put in your API token, give it a meaningful name, the Galaxy Server URL will depend on your configuration (`https://<hostname>/api/galaxy/content/published/`). 
+
+![Create Credential](images/create_cred.jpg)
+
+Finally to use the credential, attach it to the organization that projects and templates will use. This will be automatically injested when project syncs run. 
+
+![Cred Use](images/use_cred_org.jpg)
+
+A succesful project sync means that AAP was able to read and use the custom collection we added in the requirements.yml file.
+
+Last step is create a job template that utilizes the playbook we used in task 3 to test the new collections. 
+
+</details>
