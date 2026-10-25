@@ -306,3 +306,76 @@ Across the whole site: ≥3 roles, your custom filter in use, the delegated ledg
 Launch it from a new job template in automation controller.
 Prove: job output and recap; the marker/config artifacts on frontend-1 and frontend-2; the db artifact on vm3; the ledger on tower; and a second full job run with changed=0.
 
+<details>
+<summary> Click to see solution </summary>
+
+Created the new role, see the structure below.
+
+```yaml
+
+[ansible@tower ansible-lab (main)]$ tree roles/dbbackup/
+roles/dbbackup/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+│   └── capstone.j2
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+```
+
+The new role main tasks below:
+
+```yaml
+---
+# tasks file for dbbackup
+- name: Create a config file with inventory hostname and dbport
+  ansible.builtin.template:
+    src: capstone.j2
+    dest: /tmp/dbconfig.txt
+
+- name: Create a tar.gz archive of the config file
+  community.general.archive:
+    path: /tmp/dbconfig.txt
+    dest: /tmp/dbconfig.txt.tar.gz
+    format: gz
+    force_archive: true
+
+```
+
+Created a playbook the utilizes the 3 roles created in this drill, making sure the roles only runs on the requested hosts. 
+
+```yaml
+---
+- name: Play for common applied to all host
+  hosts: all
+  roles:
+  - role: common
+
+- name: Play for webapp on web group
+  hosts: web
+  roles:
+  - role: webapp
+
+- name: Play for dbbackup
+  hosts: db
+  roles:
+  - role: dbbackup
+
+```
+
+Note, had to edit the webapp ledger task to write to `tower`host, instead of localhost since this capstone is going to be ran on AAP.
+
+
+
+</details>
