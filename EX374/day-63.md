@@ -288,3 +288,7 @@ I uploaded the tar file from Task 2 into my AAP. See screentshot below. Note cre
 
 ![Ansible collection custom](images/collection_upload.png)
 
+
+###### Task 4 — Consume the published collection end-to-end, then bump the version.
+
+In a controller project, point collections/requirements.yml at the published collection (from the hub or Galaxy, not the local tarball) and run a job template using the collection's role.Prove: job output plus the role's artifacts on a host.Then bump the collection to 1.1.0, rebuild, republish, and prove a fresh job picks up the new version.
