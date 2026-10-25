@@ -193,3 +193,61 @@ The above drills only covered the install part of content collections. Will prac
 
 Run ansible-galaxy collection init to create a collection named webtools under a namespace of your choice (use your GitHub username if you intend to publish to Galaxy, since Galaxy namespaces tie to provider accounts).Set the load-bearing galaxy.yml fields: namespace, name, version 1.0.0, description, license, repository.Package your existing work into it: the webapp role goes under the collection's roles/ directory, and the quoted_csv filter goes under plugins/filter/ in collection plugin layout.
 Prove: the collection tree, and galaxy.yml showing namespace, name, and version.
+
+<details>
+<summary> Click to see solution </summary>
+
+Created the initial scaffold with `ansible-galaxy collection init chikeezeh.webtools`
+
+Edited the `galaxy.yml` file to contain the correct information. 
+
+Then moved the `webapp` role created on day-64 and the filter plugin `quoted_csv` into the respective folders. See below the structure of the source folder for the collection. 
+
+```shell
+[ansible@tower ansible-lab (main %)]$ tree chikeezeh
+chikeezeh
+└── webtools
+    ├── docs
+    ├── galaxy.yml
+    ├── meta
+    │   └── runtime.yml
+    ├── plugins
+    │   ├── filter
+    │   │   └── lab_filters.py
+    │   └── README.md
+    ├── README.md
+    └── roles
+        └── webapp
+            ├── defaults
+            │   └── main.yml
+            ├── files
+            ├── handlers
+            │   └── main.yml
+            ├── meta
+            │   └── main.yml
+            ├── README.md
+            ├── tasks
+            │   └── main.yml
+            ├── templates
+            │   └── quotecsv.j2
+            ├── tests
+            │   ├── inventory
+            │   └── test.yml
+            └── vars
+                └── main.yml
+
+
+```
+Edited the `runtime.yml` file to add the minimum supported ansible version.
+
+```shell
+[ansible@tower ansible-lab (main %)]$ cat chikeezeh/webtools/meta/runtime.yml
+---
+# Collections must specify a minimum required ansible version to upload
+# to galaxy
+requires_ansible: '>=2.14.0'
+
+```
+
+
+</details>
