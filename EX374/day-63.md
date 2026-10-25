@@ -251,3 +251,8 @@ requires_ansible: '>=2.14.0'
 
 
 </details>
+
+###### Task 2 — Build it, install it locally, use it.
+
+Build the collection with ansible-galaxy collection build and install the resulting tarball from local disk (no Galaxy/hub involved yet).Write a playbook that uses the collection's contents by FQCN: the role as <namespace>.webtools.webapp and the filter as <namespace>.webtools.quoted_csv in a template.
+
