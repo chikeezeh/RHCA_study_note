@@ -279,3 +279,7 @@ Used the playbook below to test the collection, note edited the task in the `rol
 ```
 
 </details>
+
+###### Task 3 — Publish it.
+
+Publish the built tarball to one of these, whichever your setup supports: your private automation hub if your AAP install has one deployed, or Galaxy (you'll need a Galaxy account, a namespace you own, and an API key).Prove: the collection visible at the publish destination — hub UI listing or Galaxy page — at version 1.0.0.
