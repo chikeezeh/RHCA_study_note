@@ -296,3 +296,13 @@ Then created the playbook below to use the modified webapp role.
 
 ```
 </details>
+
+###### Task 6 — Capstone: the full site
+Create a third role, dbbackup (galaxy init), that uses one collection module by FQCN to create a verifiable artifact on vm3.
+
+Assemble site.yml: common applied to all lab hosts; webapp applied to the web group; dbbackup applied to the db group. 
+
+Across the whole site: ≥3 roles, your custom filter in use, the delegated ledger task, ≥3 collection modules by FQCN, FQCN for every module call.
+Launch it from a new job template in automation controller.
+Prove: job output and recap; the marker/config artifacts on frontend-1 and frontend-2; the db artifact on vm3; the ledger on tower; and a second full job run with changed=0.
+
