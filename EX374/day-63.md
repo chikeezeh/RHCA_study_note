@@ -256,3 +256,26 @@ requires_ansible: '>=2.14.0'
 
 Build the collection with ansible-galaxy collection build and install the resulting tarball from local disk (no Galaxy/hub involved yet).Write a playbook that uses the collection's contents by FQCN: the role as <namespace>.webtools.webapp and the filter as <namespace>.webtools.quoted_csv in a template.
 
+<details>
+<summary> Click to see solution </summary>
+
+Used the following command to build the collection.
+
+`ansible-galaxy collection build chikeezeh/webtools/`
+
+Post build, a tar file: `chikeezeh-webtools-1.0.0.tar.gz` was created.
+
+Used `ansible-galaxy collection install chikeezeh-webtools-1.0.0.tar.gz -p collections` to install the collection. 
+
+Used the playbook below to test the collection, note edited the task in the `roles/webapp/tasks/main.yml` to use FQCN. 
+
+```yaml
+---
+- name: Use a custom created collection and its underlying role.
+  hosts: frontend-1
+  roles:
+    - role: chikeezeh.webtools.webapp
+
+```
+
+</details>
