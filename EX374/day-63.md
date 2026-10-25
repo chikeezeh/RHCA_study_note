@@ -183,3 +183,13 @@ A new job template running a playbook from the repo that uses: requirements.yml 
 See the solution to the capstone in the [attached playbook](../playbooks/collectioncapstone.yml). I re-used previous plays and added a 3rd task to create a null file. 
 
 </details>
+
+
+#### Content collection create and publish - drills
+
+The above drills only covered the install part of content collections. Will practice creating and publishing a content collection below. Will re-use some of the ansible contents created on [day-64](./day-64.md).
+
+###### Task 1 — Scaffold the collection
+
+Run ansible-galaxy collection init to create a collection named webtools under a namespace of your choice (use your GitHub username if you intend to publish to Galaxy, since Galaxy namespaces tie to provider accounts).Set the load-bearing galaxy.yml fields: namespace, name, version 1.0.0, description, license, repository.Package your existing work into it: the webapp role goes under the collection's roles/ directory, and the quoted_csv filter goes under plugins/filter/ in collection plugin layout.
+Prove: the collection tree, and galaxy.yml showing namespace, name, and version.
