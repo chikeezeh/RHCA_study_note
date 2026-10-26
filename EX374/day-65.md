@@ -113,3 +113,10 @@ Used the playbook below to test the survey.
 To limit the play to only `frontend-1`, I used the Prompt on Launch option for limit. Then put in frontend-1 as the only host to run the playbook on.
 
 ![Survey Limit](images/survery-limit.jpg)
+
+
+Task 6 — Capstone: the full controller stack
+
+Assemble one job template that combines the block: the update-on-launch project, the smart-web inventory, the lab-vault credential, and a survey — driving a playbook that uses both a survey variable and the vaulted variable.
+
+Prove: two launches with different survey answers produce different artifacts on the hosts; a third launch repeating one answer set is changed=0.
