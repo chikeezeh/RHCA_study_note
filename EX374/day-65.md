@@ -35,3 +35,17 @@ Its constructed-inventory configuration must do two things: (a) create a group c
 and (b) compose a new variable on those hosts (name and value of your choice, e.g. a tier label).
 
 Prove: the controller's inventory host view shows the group and its members, and a job template run against that group executes only on frontend-1 and frontend-2.
+
+Used the Source variable below to create the constructed Inventory.
+
+```yaml
+plugin: ansible.builtin.constructed
+strict: false
+compose:
+  tier: '''frontend'''
+groups:
+  frontend_hosts: inventory_hostname.startswith('frontend')
+```
+
+A new group called `frontend_hosts` was created that only has the two hosts with an `inventory_hostname` starting with `frontend`.
+
