@@ -26,3 +26,12 @@ New project created, note that you have to use the ssh cloning URL if using ssh 
 Edited a playbook with minor change and re-launched it without manual sync, and it picked the new changed. 
 
 </details>
+
+###### Task 2 — Constructed inventory
+
+Create a constructed inventory in controller (name it constructed-lab) whose source is your existing lab inventory.
+Its constructed-inventory configuration must do two things: (a) create a group containing exactly the hosts whose inventory names start with frontend, 
+
+and (b) compose a new variable on those hosts (name and value of your choice, e.g. a tier label).
+
+Prove: the controller's inventory host view shows the group and its members, and a job template run against that group executes only on frontend-1 and frontend-2.
