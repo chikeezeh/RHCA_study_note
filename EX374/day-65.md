@@ -90,3 +90,26 @@ Create a job template with a survey containing: a required text variable deploy_
 Enable Prompt on Launch for limit on the same template.
 
 Prove: one launch with custom survey answers (file contents match the answers), and one launch with a limit of frontend-1 only (recap shows only frontend-1 ran).
+
+See the survey questions below:
+
+![Survey Questions](images/drill-survey.jpg)
+
+Used the playbook below to test the survey.
+
+```yaml
+---
+- name: Create a survey file
+  hosts: all
+  tasks:
+  - name: create a file
+    ansible.builtin.copy:
+      dest: /tmp/survey-proof.txt
+      content: |
+        {{ deploy_env }}
+        {{ deploy_mode }}
+
+```
+To limit the play to only `frontend-1`, I used the Prompt on Launch option for limit. Then put in frontend-1 as the only host to run the playbook on.
+
+![Survey Limit](images/survery-limit.jpg)
