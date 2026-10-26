@@ -49,3 +49,6 @@ groups:
 
 A new group called `frontend_hosts` was created that only has the two hosts with an `inventory_hostname` starting with `frontend`.
 
+###### Task 3 — Smart inventory, with dynamism proven
+
+Create a smart inventory (name it smart-web) with a host filter that matches exactly the web hosts by name prefix.Prove membership first: the smart inventory's host list shows frontend-1 and frontend-2, nothing else.Then prove it's actually dynamic: add a new host to the source inventory that matches the filter, and show the smart inventory picks it up without any edit to the smart inventory itself.Prove: a job template launched against smart-web runs on its members.
