@@ -83,3 +83,10 @@ Then created the playbook below to consume the vault key.
 ```
 
 
+###### Task 5 — Job template survey + prompt-on-launch limit
+
+Create a job template with a survey containing: a required text variable deploy_env (default staging), and a multiple-choice variable deploy_mode with at least two options.The playbook must write both values into /tmp/survey-proof.txt on the target hosts.
+
+Enable Prompt on Launch for limit on the same template.
+
+Prove: one launch with custom survey answers (file contents match the answers), and one launch with a limit of frontend-1 only (recap shows only frontend-1 ran).
