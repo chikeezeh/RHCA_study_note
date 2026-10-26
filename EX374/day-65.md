@@ -120,3 +120,22 @@ Task 6 — Capstone: the full controller stack
 Assemble one job template that combines the block: the update-on-launch project, the smart-web inventory, the lab-vault credential, and a survey — driving a playbook that uses both a survey variable and the vaulted variable.
 
 Prove: two launches with different survey answers produce different artifacts on the hosts; a third launch repeating one answer set is changed=0.
+
+For this I combined task 4 and 5, see resulting playbook below:
+
+```yaml
+---
+- name: A captsone that contains all the drills for controller
+  hosts: all
+  vars_files:
+    - encryvar.yml
+  tasks:
+  - name: create a file
+    ansible.builtin.copy:
+      dest: /tmp/controllercap.txt
+      content: |
+        {{ deploy_env }}
+        {{ deploy_mode }}
+        {{ test }}
+
+```
