@@ -62,3 +62,24 @@ See the image below for how the smart inventory is created.
 Create a Vault credential in controller (name it lab-vault) and a vault-encrypted variable file in the repo (use the same vault password) defining one variable of your choice.Write a playbook task that consumes that variable into a config file on a host — do not print the value with debug in job output; the file on the host is the proof.
 
 Create a job template with the Vault credential attached and launch it.Prove: job output (successful run, no vault error) plus cat of the config file on the host showing the decrypted value in place.
+
+See the credential screenshot below:
+
+![Lab Vault](images/labvault.jpg)
+
+Then created the playbook below to consume the vault key.
+
+```yaml
+---
+- name: consume a vault encrypted file
+  hosts: localhost
+  vars_files:
+   - encryvar.yml
+  tasks:
+  - name: Create a config file
+    ansible.builtin.copy:
+      dest: /tmp/vaultconfig
+      content: "{{ test }}"
+```
+
+
