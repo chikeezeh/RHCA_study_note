@@ -57,3 +57,8 @@ See the image below for how the smart inventory is created.
 
 ![Drill Smart Inventory](images/drill-smart_inventory.jpg)
 
+###### Task 4 — Vault credential, used by a job
+
+Create a Vault credential in controller (name it lab-vault) and a vault-encrypted variable file in the repo (use the same vault password) defining one variable of your choice.Write a playbook task that consumes that variable into a config file on a host — do not print the value with debug in job output; the file on the host is the proof.
+
+Create a job template with the Vault credential attached and launch it.Prove: job output (successful run, no vault error) plus cat of the config file on the host showing the decrypted value in place.
