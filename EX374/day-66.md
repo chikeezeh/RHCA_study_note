@@ -1,2 +1,4 @@
 #### Advanced controller task - drills
 
+###### Task 1 — Dynamic inventory script
+Write an executable inventory script in the repo (e.g. inventory/cmdb.py) that reads hosts from a data file (e.g. inventory/cmdb.json) — the data file stands in for your CMDB/database. The script must support --list (full inventory JSON with _meta.hostvars) and --host <name> (that host's variables).Prove: --list output, --host output for one host, and ansible-inventory --graph against the script showing the groups.Then prove dynamism: add a host to the data file and show it appears in --list output with no change to the script.
