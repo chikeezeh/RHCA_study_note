@@ -205,3 +205,15 @@ See below the dynamic-lab source, reading from the python script.
 ###### Task 3 — Workflow with an approval gate
 
 Build a workflow job template (name it drill-workflow-approval) with three nodes: Job A → Approval → Job B. Job A and B can be simple existing playbooks (a config write and a verification read).Prove: launch the workflow and show it pausing at the approval node, then approve it in the UI and show Job B running to success. The workflow output must show all three nodes in order.
+
+<details>
+
+<summary>Click to open solution</summary>
+
+Will use community.yml as Job A and configuressh.yml as the Job B. 
+
+See below the visualizer.
+
+![Approval Visualizer](images/drill-approval.jpg)
+
+</details>
