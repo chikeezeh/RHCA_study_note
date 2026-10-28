@@ -217,3 +217,7 @@ See below the visualizer.
 ![Approval Visualizer](images/drill-approval.jpg)
 
 </details>
+
+###### Task 4 — Workflow branching: success and failure paths
+
+Build a second workflow (drill-workflow-branch) whose first node runs a job template that accepts an extra variable (e.g. force_fail, default false) and fails the play when it's true. The workflow must route the node's success edge to one job and its failure edge to a different job.Prove both paths with two launches: once with the variable false (success branch runs, failure branch does not), once with it true (failure branch runs, success branch does not). Both workflow outputs required.
