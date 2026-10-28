@@ -197,3 +197,8 @@ Create an inventory in controller (name it dynamic-lab) with a source of type "S
 Sync it.Prove: the controller's host list shows the script's hosts, and a job template run against dynamic-lab executes on them.
 
 Then prove controller-side dynamism: edit the data file, push, re-sync the source, and show the new host appearing in the controller inventory.
+
+See below the dynamic-lab source, reading from the python script.
+
+![Dynamic Lab](images/dynamic-lab.jpg)
+
