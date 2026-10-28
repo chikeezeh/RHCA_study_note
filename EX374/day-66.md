@@ -190,3 +190,10 @@ Also, using the `--graph` flag.
 
 </details>
 
+###### Task 2 — Dynamic inventory in controller
+
+Create an inventory in controller (name it dynamic-lab) with a source of type "Sourced from a Project" pointing at the script in your ansible-lab-dev project. 
+
+Sync it.Prove: the controller's host list shows the script's hosts, and a job template run against dynamic-lab executes on them.
+
+Then prove controller-side dynamism: edit the data file, push, re-sync the source, and show the new host appearing in the controller inventory.
