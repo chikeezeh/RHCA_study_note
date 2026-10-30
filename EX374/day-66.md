@@ -221,3 +221,63 @@ See below the visualizer.
 ###### Task 4 — Workflow branching: success and failure paths
 
 Build a second workflow (drill-workflow-branch) whose first node runs a job template that accepts an extra variable (e.g. force_fail, default false) and fails the play when it's true. The workflow must route the node's success edge to one job and its failure edge to a different job.Prove both paths with two launches: once with the variable false (success branch runs, failure branch does not), once with it true (failure branch runs, success branch does not). Both workflow outputs required.
+
+<details>
+
+<summary>Click to open solution</summary>
+
+I created 3 simple playbooks, the main node which has a variable that will be set by survey prompt in the AAP UI.
+
+```yaml
+---
+- name: playbook to practice fail branching
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Use the failvalue
+    debug:
+      msg: " Hello World "
+    failed_when: failvalue | bool
+
+```
+
+When the main node passes;
+
+```yaml
+---
+- name: playbook to practice fail branching
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Use when pass
+    debug:
+      msg: "My parent job passed"
+
+```
+
+When the main node fails;
+
+```yaml
+---
+- name: playbook to practice fail branching
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Use when failed
+    debug:
+      msg: "My parent job failed"
+```
+
+See images from AAI UI.
+
+![Main flow](images/branchdrill.jpg)
+
+---
+
+![True Flow](images/branchtrue.jpg)
+
+---
+
+![Fail Flow](images/branchfail.jpg)
+
+</details>
