@@ -379,3 +379,7 @@ Payload:
 
 
 </details>
+
+###### Task 6 — Capstone: the full advanced stack
+
+Assemble a workflow (drill-workflow-capstone) that runs against the dynamic-lab inventory, includes an approval node and both success/failure branches, has a schedule attached, and has the webhook notification attached.Prove: a full workflow run showing the approval gate and the success branch, the schedule listed on the workflow, and a notification payload in the listener log from the run.
