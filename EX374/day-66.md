@@ -289,3 +289,93 @@ Create a one-time schedule on an existing job template set to fire ~15 minutes o
 Also create a recurring schedule (e.g. weekdays) and show it listed on the template's Schedules tab.
 Create a webhook notification template pointing at a simple listener on tower (a one-liner HTTP server logging POSTs to a file), attach it to a job template for both success and failure, run the job, and show the listener log receiving the payload.
 Prove: the fired scheduled job, the recurring schedule listing, and the listener log lines.
+
+<details>
+<summary> Click to open solution </summary>
+
+For the one time schedule, created a schedule to run in 15 mins, and set it to 1 occurence. See image below.
+
+![15 minuets](images/15minsschedule.jpg)
+
+For the reoccuring schedule, created a schedule to run every day at 12 noon. See image below.
+
+![Fail Daily](images/faildaily.jpg)
+
+Finally, created a webhook under notifiers. 
+
+![Webhook ](images/webhook.jpg)
+
+Then, attached the webhook to the notifier of an existing `Job Template`.
+
+![Main flow webhook](images/mainflowwebhook.jpg)
+
+On the host itself, I ran a python online that listens for a post request, and writes to a file called `/tmp/webhook.log`.
+
+```shell
+python3 -c '
+import http.server, sys
+
+class H(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(length).decode("utf-8", errors="replace")
+        with open("/tmp/webhook.log", "a") as f:
+            f.write(f"\n--- Webhook received at {self.date_time_string()} ---\n")
+            f.write(f"Headers:\n{self.headers}\nPayload:\n{body}\n")
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK\n")
+
+http.server.HTTPServer(("0.0.0.0", 8888), H).serve_forever()
+'
+```
+
+See example payload received when I ran the `Job Template`.
+
+```shell
+--- Webhook received at Sun, 01 Nov 2026 19:47:10 GMT ---
+Headers:
+Host: host.containers.internal:8888
+User-Agent: Red Hat Ansible Automation Platform 4.6.30 (enterprise)
+Accept-Encoding: gzip, deflate, br, zstd
+Accept: */*
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 576
+
+
+Payload:
+{"id": 372, "name": "drill-mainflow", "url": "https://platformhost/execution/jobs/playbook/372", "created_by": "admin", "started": "2026-11-01T19:47:07.150422+00:00", "finished": "2026-11-01T19:47:09.865586+00:00", "status": "successful", "traceback": "", "inventory": "lab", "project": "AAP drill project", "playbook": "mainworkflow.yml", "credential": "ansible_user", "limit": "", "extra_vars": "{\"failvalue\": \"false\"}", "hosts": {"localhost": {"failed": false, "changed": 0, "dark": 0, "failures": 0, "ok": 1, "processed": 1, "skipped": 0, "rescued": 0, "ignored": 0}}}
+
+--- Webhook received at Sun, 01 Nov 2026 19:47:58 GMT ---
+Headers:
+Host: host.containers.internal:8888
+User-Agent: Red Hat Ansible Automation Platform 4.6.30 (enterprise)
+Accept-Encoding: gzip, deflate, br, zstd
+Accept: */*
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 405
+
+
+Payload:
+{"id": 374, "name": "drill-mainflow", "url": "https://platformhost/execution/jobs/playbook/374", "created_by": "admin", "started": "2026-11-01T19:47:58.228066+00:00", "finished": null, "status": "running", "traceback": "", "inventory": "lab", "project": "AAP drill project", "playbook": "mainworkflow.yml", "credential": "ansible_user", "limit": "", "extra_vars": "{\"failvalue\": \"true\"}", "hosts": {}}
+
+--- Webhook received at Sun, 01 Nov 2026 19:48:01 GMT ---
+Headers:
+Host: host.containers.internal:8888
+User-Agent: Red Hat Ansible Automation Platform 4.6.30 (enterprise)
+Accept-Encoding: gzip, deflate, br, zstd
+Accept: */*
+Connection: keep-alive
+Content-Type: application/json
+Content-Length: 570
+
+
+Payload:
+{"id": 374, "name": "drill-mainflow", "url": "https://platformhost/execution/jobs/playbook/374", "created_by": "admin", "started": "2026-11-01T19:47:58.228066+00:00", "finished": "2026-11-01T19:48:00.970068+00:00", "status": "failed", "traceback": "", "inventory": "lab", "project": "AAP drill project", "playbook": "mainworkflow.yml", "credential": "ansible_user", "limit": "", "extra_vars": "{\"failvalue\": \"true\"}", "hosts": {"localhost": {"failed": true, "changed": 0, "dark": 0, "failures": 1, "ok": 0, "processed": 1, "skipped": 0, "rescued": 0, "ignored": 0}}}
+
+```
+
+
+</details>
