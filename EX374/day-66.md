@@ -281,3 +281,11 @@ See images from AAI UI.
 ![Fail Flow](images/branchfail.jpg)
 
 </details>
+
+###### Task 5 — Schedules and a webhook notification
+
+Create a one-time schedule on an existing job template set to fire ~15 minutes out, and show the resulting job in the Jobs list after it fires. 
+
+Also create a recurring schedule (e.g. weekdays) and show it listed on the template's Schedules tab.
+Create a webhook notification template pointing at a simple listener on tower (a one-liner HTTP server logging POSTs to a file), attach it to a job template for both success and failure, run the job, and show the listener log receiving the payload.
+Prove: the fired scheduled job, the recurring schedule listing, and the listener log lines.
