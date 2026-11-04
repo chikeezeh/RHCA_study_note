@@ -1,10 +1,12 @@
 ---
-- name: verify what collections ansible sees when running
+- name: Check Ansible and Execution Environment Versions
   hosts: localhost
   gather_facts: false
   tasks:
-  - name: use command module to run ansible commands
-    ansible.builtin.debug:
-      msg: >-
-        Ansible-Core Version: {{ ansible_version.full }}
-        Python Version: {{ ansible_version.python.version | join('.') }}
+    - name: Get ansible version details
+      ansible.builtin.command: ansible --version
+      register: ansible_version_output
+
+    - name: Display the output
+      ansible.builtin.debug:
+        msg: "{{ ansible_version_output.stdout_lines }}"
