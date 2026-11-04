@@ -1,0 +1,10 @@
+---
+- name: verify what collections ansible sees when running
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: use command module to run ansible commands
+    ansible.builtin.debug:
+      msg: >-
+        Ansible-Core Version: {{ ansible_version.full }}
+        Python Version: {{ ansible_version.python.version | join('.') }}
