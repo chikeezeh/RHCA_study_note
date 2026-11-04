@@ -10,7 +10,54 @@ The drills that follow are to practice the following exam objectives;
 ###### Task 1 — Build a custom EE
 In the repo, create an EE definition (e.g. under ee/) based on the default base image ee-supported-rhel8, with a galaxy requirements file listing the collections you actually use (community.general, community.crypto — the ones from the earlier blocks).Build it with ansible-builder and tag it (e.g. lab-ee:1.0).
 
+<details>
+<summary>Click to open solution</summary>
 
+Installed `ansible-builder`, see [Key information for execution environment below](#key-information-for-execution-environment). 
+
+This is the content of the `execution-environment.yml` file.
+
+```yaml
+version: 3
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel8:latest
+dependencies:
+  ansible_core:
+    package_pip: ansible-core==2.16.19
+  galaxy: requirements.yml
+
+```
+
+Also, the `requirements.yml`:
+
+```yaml
+---
+collections:
+ - name: community.general
+   version: "9.5.13"
+ - name: community.crypto
+   version: "2.22.3"
+
+```
+
+See below the content of the created image.
+
+```shell
+[ansible@tower ansible-lab (main)]$ podman run --rm -it localhost/lab-ee:1.0 ansible-galaxy collection list
+/usr/lib64/python3.12/site-packages/cryptography/hazmat/backends/openssl/backend.py:8: CryptographyDeprecationWarning: You are using OpenSSL < 3.0. Support for OpenSSL < 3.0 is deprecated and will be removed in the next release. Please upgrade to OpenSSL 3.0 or later.
+  from cryptography.hazmat.bindings.openssl import binding
+
+# /usr/share/ansible/collections/ansible_collections
+Collection        Version
+----------------- -------
+community.crypto  2.22.3
+community.general 9.5.13
+
+```
+
+
+</details>
 
 
 
