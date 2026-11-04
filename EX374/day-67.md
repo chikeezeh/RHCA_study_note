@@ -59,6 +59,9 @@ community.general 9.5.13
 
 </details>
 
+###### Task 2 — Run a playbook inside the EE, standalone
+
+Run a playbook from inside the new EE via podman run (mount the playbook and inventory in) that uses a baked collection by FQCN — e.g. community.general.ini_file writing a file on a managed host.The key constraint: no collections/requirements.yml involved — the playbook's project must not install anything at runtime. If the run succeeds, the collection came from the EE, and nothing else.Prove: the run output showing the task succeeding, plus the command you ran (so the mounts and image are visible).
 
 
 ##### Key information for execution environment.
