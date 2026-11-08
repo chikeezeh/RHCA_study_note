@@ -71,10 +71,7 @@ I decided to use `ansible-navigator` for this, so installed it first `sudo dnf i
 
 Then created a new directory to test my previous playbook.
 
-Inside the directory, created to files,
-
-
-
+Inside the directory, created to the files below to configure ansible-navigator to use an inventory file and also use the image created. 
 
 ```shell
 
