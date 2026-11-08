@@ -113,6 +113,11 @@ Afterwards, ran the playbook using the command below.
 
 </details>
 
+###### Task 3 — Push the EE to your private hub
+
+Push the image to the private automation hub's container registry (follow the hub UI's push instructions for the image name and namespace).
+Prove: podman push output succeeding, and the hub UI listing your EE image with its tag.
+
 
 ##### Key information for execution environment.
 
