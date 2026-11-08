@@ -63,6 +63,59 @@ community.general 9.5.13
 
 Run a playbook from inside the new EE via podman run (mount the playbook and inventory in) that uses a baked collection by FQCN — e.g. community.general.ini_file writing a file on a managed host.The key constraint: no collections/requirements.yml involved — the playbook's project must not install anything at runtime. If the run succeeds, the collection came from the EE, and nothing else.Prove: the run output showing the task succeeding, plus the command you ran (so the mounts and image are visible).
 
+<details>
+
+<summary> Click to open solution </summary>
+
+I decided to use `ansible-navigator` for this, so installed it first `sudo dnf install ansible-navigator`.
+
+Then created a new directory to test my previous playbook.
+
+Inside the directory, created to files,
+
+
+
+
+```shell
+
+-rw-r--r--. 1 ansible ansible    263 Nov  4 11:19 ansible-navigator.yml
+-rw-r--r--. 1 ansible ansible    114 Nov  4 11:16 inventory
+
+[ansible@tower nav]$ cat ansible-navigator.yml
+---
+ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+      - ./inventory
+    cmdline: "--user ansible"
+  execution-environment:
+    container-options:
+      - "--net=host"
+    enabled: true
+    image: localhost/lab-ee:1.0
+    pull:
+      policy: never
+
+
+[ansible@tower nav]$ cat inventory
+tower
+[web]
+frontend-1 ansible_host=vm1
+frontend-2 ansible_host=vm2
+[db]
+vm3
+[ubuntu]
+frontend-3 ansible_host=vm4
+
+```
+
+Afterwards, ran the playbook using the command below.
+
+`ansible-navigator run community-ini.yml`
+
+</details>
+
 
 ##### Key information for execution environment.
 
