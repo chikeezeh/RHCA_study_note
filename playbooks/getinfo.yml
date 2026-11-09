@@ -7,6 +7,14 @@
       ansible.builtin.command: ansible --version
       register: ansible_version_output
 
-    - name: Display the output
+    - name: Display the version output
       ansible.builtin.debug:
         msg: "{{ ansible_version_output.stdout_lines }}"
+    
+    - name: Get ansible collection details
+      ansible.builtin.command: ansible-galaxy collection list
+      register: ansible_collection_output
+
+    - name: Display the collection output
+      ansible.builtin.debug:
+        msg: "{{ ansible_collection_output.stdout_lines }}"
