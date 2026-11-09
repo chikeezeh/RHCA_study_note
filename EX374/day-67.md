@@ -118,6 +118,19 @@ Afterwards, ran the playbook using the command below.
 Push the image to the private automation hub's container registry (follow the hub UI's push instructions for the image name and namespace).
 Prove: podman push output succeeding, and the hub UI listing your EE image with its tag.
 
+<details>
+
+<summary>Click to open solution</summary>
+
+To solve this, there are three steps, 
+
+1. log into your AAP automation hub registry: `podman login --tls-verify=false <AAP hostname or IP>`
+2. tag the image you created to have the name with the hostname of AAP. `podman image tag localhost/lab-ee:1.0 <AAP hostname>/lab-ee:1.0`
+3. Finally push to AAP with `podman push <AAP hostname>/lab-ee:1.0`
+
+Ran into some errors uploading via the hostname of my tunneled AAP, so I had to log into it and use the IP address instead. 
+
+</details>
 
 ##### Key information for execution environment.
 
