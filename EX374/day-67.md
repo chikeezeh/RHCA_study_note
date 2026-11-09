@@ -151,6 +151,13 @@ Job template using the execution environment.
 
 </details>
 
+
+Task 5 — Capstone: the EE versioning workflow
+
+Bump the EE: change something real — a collection version, or an added collection/system package — and rebuild as a new tag (e.g. lab-ee:2.0). Push the new tag to the hub, point the controller EE at it, and run a job proving the new content is live (e.g. the job output showing the new collection version, or a task using the newly added thing).Prove: the rebuild output, the hub UI showing both tags, the controller EE pointing at the new tag, and the job output proving the new content.
+
+
+
 ##### Key information for execution environment.
 
 1. You need to install the ansible-builder command.
