@@ -156,6 +156,45 @@ Task 5 — Capstone: the EE versioning workflow
 
 Bump the EE: change something real — a collection version, or an added collection/system package — and rebuild as a new tag (e.g. lab-ee:2.0). Push the new tag to the hub, point the controller EE at it, and run a job proving the new content is live (e.g. the job output showing the new collection version, or a task using the newly added thing).Prove: the rebuild output, the hub UI showing both tags, the controller EE pointing at the new tag, and the job output proving the new content.
 
+<details>
+<summary>Click to open solution</summary>
+
+The new update I did was to install a local created collection, see below the content of the `execution-environment.yml` and `requirements.yml` files respectively. 
+
+```yaml
+---
+version: 3
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel8:latest
+dependencies:
+  ansible_core:
+    package_pip: ansible-core==2.16.19
+  galaxy: requirements.yml
+additional_build_files:
+  - src: chikeezeh-webtools-1.1.0.tar.gz
+    dest: local_collection
+
+```
+---
+
+```yaml
+---
+collections:
+ - name: community.general
+   version: "9.5.13"
+ - name: community.crypto
+   version: "2.22.3"
+ - name: ./local_collection/chikeezeh-webtools-1.1.0.tar.gz
+
+```
+
+After making the edits, built a new image using;
+
+`ansible-builder build -f execution-environment.yml -t lab-ee:2.0 -c /var/tmp/ee-build --container-runtime podman --prune-images -v 3`
+
+</details>
+
 
 
 ##### Key information for execution environment.
