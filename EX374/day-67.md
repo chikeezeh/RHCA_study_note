@@ -132,6 +132,11 @@ Ran into some errors uploading via the hostname of my tunneled AAP, so I had to 
 
 </details>
 
+
+Task 4 — Run a controller job on the custom EE
+
+Register the EE in controller (pointing at the hub image), attach it to a job template, and run a job that uses a baked collection by FQCN — again with no collections/requirements.yml in that playbook's project path, so the EE is the only possible source.Prove: the job succeeding, and the job's Details page showing the custom EE (not the default one).
+
 ##### Key information for execution environment.
 
 1. You need to install the ansible-builder command.
